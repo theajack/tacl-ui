@@ -1,0 +1,11 @@
+{
+  "name": "${name}",
+  "version": "${version}",
+  "description": "一套taost、confirm、loading、alert、drag的简单ui组件",
+  "main": "index.js",
+  "keywords": [
+    "tacl-ui"
+  ],
+  "author": "${author}",
+  "license": "MIT"
+}
