@@ -11,7 +11,7 @@ module.exports = {
         },
         'LICENSE': {
             author: 'theajack'
-        }
+        },
     },
     output: {
         'README.md': ['./', './npm/'],

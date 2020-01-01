@@ -6,6 +6,9 @@
   "keywords": [
     "tacl-ui"
   ],
+  "dependencies": {
+    "${easydom}": "latest"
+  },
   "author": "${author}",
   "license": "MIT"
 }

@@ -17,6 +17,7 @@ module.exports = {
             author: 'theajack',
             name: 'tacl-ui',
             version,
+            easydom: 'easy-dom-util'
         },
         'version.js': {
             version,
