@@ -71,6 +71,7 @@ declare interface DragParameters {
     onSideChange?: (isLeft:boolean) => {};
     zIndex?: number;
     enableDrag?:boolean;
+    delay?:number;
     aside?:boolean;
     preventDefault?:boolean;
     reinitPosition?:boolean;

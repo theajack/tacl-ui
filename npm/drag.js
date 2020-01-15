@@ -48,6 +48,8 @@ function () {
         onSideChange = _ref$onSideChange === void 0 ? df : _ref$onSideChange,
         _ref$zIndex = _ref.zIndex,
         zIndex = _ref$zIndex === void 0 ? 100 : _ref$zIndex,
+        _ref$delay = _ref.delay,
+        delay = _ref$delay === void 0 ? 0 : _ref$delay,
         _ref$aside = _ref.aside,
         aside = _ref$aside === void 0 ? false : _ref$aside,
         _ref$preventDefault = _ref.preventDefault,
@@ -103,13 +105,19 @@ function () {
     this.touchActiveInit(zIndex);
     this.initPosition(true);
 
+    var delayExecInitPosition = function delayExecInitPosition() {
+      if (delay > 0) {
+        window.setTimeout(function () {
+          _this.initPosition();
+        }, delay);
+      } else {
+        _this.initPosition();
+      }
+    };
+
     if (reinitPosition === true) {
-      window.addEventListener('orientationchange', function () {
-        _this.initPosition();
-      }, false);
-      window.addEventListener('resize', function () {
-        _this.initPosition();
-      }, false);
+      window.addEventListener('orientationchange', delayExecInitPosition, false);
+      window.addEventListener('resize', delayExecInitPosition, false);
     }
   }
 

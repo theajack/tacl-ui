@@ -30,6 +30,7 @@ class Drag {
         onClick = df,
         onSideChange = df,
         zIndex = 100,
+        delay = 0,
         aside = false,
         preventDefault = true,
         reinitPosition = false,
@@ -69,13 +70,18 @@ class Drag {
         this.aside = aside; // 是否吸附在两侧
         this.touchActiveInit(zIndex);
         this.initPosition(true);
+        let delayExecInitPosition = () => {
+            if (delay > 0) {
+                window.setTimeout(() => {
+                    this.initPosition();
+                }, delay);
+            } else {
+                this.initPosition();
+            }
+        };
         if (reinitPosition === true) {
-            window.addEventListener('orientationchange', () => {
-                this.initPosition();
-            }, false);
-            window.addEventListener('resize', () => {
-                this.initPosition();
-            }, false);
+            window.addEventListener('orientationchange', delayExecInitPosition, false);
+            window.addEventListener('resize', delayExecInitPosition, false);
         }
     }
 
