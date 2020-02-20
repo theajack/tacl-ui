@@ -18,6 +18,6 @@ module.exports = {
         'README.md': ['./', './npm/'],
         'LICENSE': ['./', './npm/'],
         'package.json': './npm/',
-        'version.js': './npm/'
+        'version.js': './src/'
     }
 };

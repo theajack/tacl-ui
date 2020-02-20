@@ -1,13 +1,13 @@
 {
   "name": "tacl-ui",
-  "version": "0.0.24",
+  "version": "0.0.26",
   "description": "一套taost、confirm、loading、alert、drag的简单ui组件",
   "main": "index.js",
   "keywords": [
     "tacl-ui"
   ],
   "dependencies": {
-    "easy-dom-util": "latest"
+    "easy-dom-util": "^0.0.21"
   },
   "author": "theajack",
   "license": "MIT"

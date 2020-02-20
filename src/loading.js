@@ -39,7 +39,6 @@ function init (text, time) {
 }
 
 function open (text, time) {
-    debugger;
     let autoClose = typeof time === 'number';
     el.isOpen = true;
     el.mask.style('display', 'block');

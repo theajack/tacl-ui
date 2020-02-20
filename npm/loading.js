@@ -36,7 +36,7 @@ function init(text, time) {
     /* html*/
     "\n<svg class=\"g-loading-circular\" viewBox=\"0 0 50 50\">\n    <circle class=\"g-loading-path\" cx=\"25\" cy=\"25\" r=\"20\" fill=\"none\"></circle>\n</svg>");
 
-    var _text = _style.$.create();
+    var _text = _style.$.create().cls('text');
 
     _style.$.clearClassPrefix();
 
@@ -86,7 +86,7 @@ function close() {
 function initStyle(common) {
   return (
     /* css*/
-    "\n    .g-loading-mask{\n        ".concat(common.piece.mask, ";\n        background-color:transparent;\n    }\n    .g-loading-wrapper {\n        ").concat(common.piece.centerWrapper, "\n        opacity:0;\n        transition:opacity .3s ease;\n        padding: 10px 12px;\n    }\n    .g-loading-wrapper.g-loading-open {\n        opacity:1;\n    }\n    .g-loading-circular {\n        width:42px;\n        height:42px;\n        animation:g-loading-rotate 2s linear infinite;\n    }\n    .g-loading-path {\n        animation:g-loading-dash 1.5s ease-in-out infinite;\n        stroke-dasharray:90 120;\n        stroke-dashoffset:0;\n        stroke-width:4;\n        stroke:#fff;\n        stroke-linecap:round;\n    }\n    @keyframes g-loading-dash {\n        0% {\n        stroke-dasharray:1 200;\n        stroke-dashoffset:0;\n    }\n    50% {\n        stroke-dasharray:90 150;\n        stroke-dashoffset:-40px;\n    }\n    100% {\n        stroke-dasharray:90 150;\n        stroke-dashoffset:-120px;\n    }\n    }@keyframes g-loading-rotate {\n        to {\n        transform:rotate(1turn);\n    }\n    }")
+    "\n    .g-loading-mask{\n        ".concat(common.piece.mask, ";\n        background-color:transparent;\n    }\n    .g-loading-wrapper {\n        ").concat(common.piece.centerWrapper, "\n        opacity:0;\n        transition:opacity .3s ease;\n        padding: 10px 12px;\n    }\n    .g-loading-wrapper.g-loading-open {\n        opacity:1;\n    }\n    .g-loading-circular {\n        width:42px;\n        height:42px;\n        animation:g-loading-rotate 2s linear infinite;\n    }\n    .g-loading-text {\n        ").concat(common.piece.overScroll, "\n    }\n    .g-loading-path {\n        animation:g-loading-dash 1.5s ease-in-out infinite;\n        stroke-dasharray:90 120;\n        stroke-dashoffset:0;\n        stroke-width:4;\n        stroke:#fff;\n        stroke-linecap:round;\n    }\n    @keyframes g-loading-dash {\n        0% {\n        stroke-dasharray:1 200;\n        stroke-dashoffset:0;\n    }\n    50% {\n        stroke-dasharray:90 150;\n        stroke-dashoffset:-40px;\n    }\n    100% {\n        stroke-dasharray:90 150;\n        stroke-dashoffset:-120px;\n    }\n    }@keyframes g-loading-rotate {\n        to {\n        transform:rotate(1turn);\n    }\n    }")
   );
 }
 
