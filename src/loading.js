@@ -25,7 +25,7 @@ function init (text, time) {
     <circle class="g-loading-path" cx="25" cy="25" r="20" fill="none"></circle>
 </svg>`
         );
-        let text = $.create();
+        let text = $.create().cls('text');
         $.clearClassPrefix();
         initTaclUI(mask);
         $.query(document.body).append(
@@ -39,6 +39,7 @@ function init (text, time) {
 }
 
 function open (text, time) {
+    debugger;
     let autoClose = typeof time === 'number';
     el.isOpen = true;
     el.mask.style('display', 'block');
@@ -84,6 +85,9 @@ function initStyle (common) {
         width:42px;
         height:42px;
         animation:g-loading-rotate 2s linear infinite;
+    }
+    .g-loading-text {
+        ${common.piece.overScroll}
     }
     .g-loading-path {
         animation:g-loading-dash 1.5s ease-in-out infinite;

@@ -68,6 +68,7 @@ function initStyle (common) {
     return /* css*/`
     .g-toast-wrapper {
         ${common.piece.centerWrapper}
+        ${common.piece.overScroll}
         opacity:0;
         transition:opacity .3s ease;
         padding: 8px 10px;

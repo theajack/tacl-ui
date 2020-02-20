@@ -138,6 +138,7 @@ function initStyle (common) {
         line-height:25px;
         text-align:center;
         color:#888;
+        ${common.piece.overScroll}
     }
     .g-confirm-btn-w {
         display:flex;

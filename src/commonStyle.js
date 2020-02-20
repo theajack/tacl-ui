@@ -24,6 +24,12 @@ let piece = {
         text-align: center;
         max-width: 50%;
         color:#fff;
+    `,
+    overScroll: `
+        word-break: break-all;
+        max-height: 300px;
+        overflow: auto;
+        margin: 10px 0;
     `
 };
 export default {

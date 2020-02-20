@@ -7,7 +7,7 @@
     "tacl-ui"
   ],
   "dependencies": {
-    "${easydom}": "latest"
+    "${easydom}": "^0.0.20"
   },
   "author": "${author}",
   "license": "MIT"

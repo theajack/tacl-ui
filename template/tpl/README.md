@@ -29,6 +29,8 @@ import TaclUI from '${install}';
 
 ```html
 <script src="${script}"></script>
+<!--或通过版本号引入-->
+<script src="${scriptVersion}"></script>
 <script>
     TaclUI.toast('Hello world!')
 </script>
