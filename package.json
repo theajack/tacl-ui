@@ -50,9 +50,7 @@
         "webpack-cli": "^3.3.9",
         "webpack-dev-server": "^3.8.2"
     },
-    "dependencies": {
-        "@tencent/easy-dom": "0.0.21"
-    },
+    "dependencies": {},
     "husky": {
         "hooks": {
             "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"

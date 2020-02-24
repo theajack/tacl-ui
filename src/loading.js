@@ -25,14 +25,16 @@ function init (text, time) {
     <circle class="g-loading-path" cx="25" cy="25" r="20" fill="none"></circle>
 </svg>`
         );
-        let text = $.create().cls('text');
+        if (typeof text === 'string' || typeof text === 'number') {
+            el.text = $.create().cls('text');
+            wrapper.append(el.text);
+        }
         $.clearClassPrefix();
         initTaclUI(mask);
         $.query(document.body).append(
-            mask.append(wrapper.append(text))
+            mask.append(wrapper)
         );
         el.mask = mask;
-        el.text = text;
         el.wrapper = wrapper;
     }
     open(text, time);
@@ -60,7 +62,8 @@ function close () {
         el.wrapper.rmClass(prefix + 'open');
         window.setTimeout(() => {
             el.mask.style('display', 'none');
-            el.text.text('');
+            if (el.text)
+                el.text.text('');
         }, 350);
     }
 }
