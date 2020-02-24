@@ -1,4 +1,6 @@
-let tnpm = false;
+let config = require('./render.local');
+
+let tnpm = config.tnpm;
 let target = ['npm'];
 if (tnpm) { target.push('tnpm');}
 
