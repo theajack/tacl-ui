@@ -10,7 +10,13 @@
     <div id='aa'>11</div>
     <script src="./bundle.js"></script>
     <script>
-        tacl.drag({el:document.getElementById('aa')})
+        tacl.drag({
+            el:document.getElementById('aa'),
+            aside: true,
+            onSideChange:(a)=>{
+                console.log(a)
+            }
+        })
     </script>
 </body>
 </html>

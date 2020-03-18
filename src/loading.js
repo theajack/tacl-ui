@@ -25,10 +25,8 @@ function init (text, time) {
     <circle class="g-loading-path" cx="25" cy="25" r="20" fill="none"></circle>
 </svg>`
         );
-        if (typeof text === 'string' || typeof text === 'number') {
-            el.text = $.create().cls('text');
-            wrapper.append(el.text);
-        }
+        el.text = $.create().cls('text');
+        wrapper.append(el.text);
         $.clearClassPrefix();
         initTaclUI(mask);
         $.query(document.body).append(
@@ -44,9 +42,7 @@ function open (text, time) {
     let autoClose = typeof time === 'number';
     el.isOpen = true;
     el.mask.style('display', 'block');
-    if (typeof text !== 'undefined') {
-        el.text.text(text);
-    }
+    el.text.text(text);
     window.setTimeout(() => {
         el.wrapper.addClass(prefix + 'open');
     }, 10);
@@ -62,8 +58,7 @@ function close () {
         el.wrapper.rmClass(prefix + 'open');
         window.setTimeout(() => {
             el.mask.style('display', 'none');
-            if (el.text)
-                el.text.text('');
+            el.text.text('');
         }, 350);
     }
 }
@@ -90,6 +85,7 @@ function initStyle (common) {
     }
     .g-loading-text {
         ${common.piece.overScroll}
+        margin: 0;
     }
     .g-loading-path {
         animation:g-loading-dash 1.5s ease-in-out infinite;

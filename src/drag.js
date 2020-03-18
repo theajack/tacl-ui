@@ -29,6 +29,9 @@ class Drag {
         enableDrag = true,
         onClick = df,
         onSideChange = df,
+        onDragStart = df,
+        onDragMove = df,
+        onDragEnd = df,
         zIndex = 100,
         delay = 0,
         aside = false,
@@ -68,6 +71,9 @@ class Drag {
         this.onSideChange = onSideChange; // 吸附边改变的事件
         this.sideLeft = false; // 是否吸附在左侧
         this.aside = aside; // 是否吸附在两侧
+        this.onDragStart = onDragStart;
+        this.onDragMove = onDragMove;
+        this.onDragEnd = onDragEnd;
         this.touchActiveInit(zIndex);
         this.initPosition(true);
         let delayExecInitPosition = () => {
@@ -135,6 +141,7 @@ class Drag {
         // 手指按下时的坐标
         this.starX = e.touches[0].clientX;
         this.starY = e.touches[0].clientY;
+        this.onDragStart.call(this, e, this.starX, this.starY);
     }
     touchMove (e) {
         let size = this.getParentSize();
@@ -155,6 +162,7 @@ class Drag {
         this.moveY = this.T;
         if (this.enableDrag) {
             this.setPosition(this.moveX, this.moveY);
+            this.onDragMove.call(this, e, this.moveX, this.moveY);
         }
     }
     touchEnd (e) {
@@ -198,6 +206,7 @@ class Drag {
                 dom.style.transition = '';
             }, 200);
         }
+        this.onDragEnd.call(this, e, endX, endY);
     }
 }
 

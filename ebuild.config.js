@@ -12,7 +12,7 @@ module.exports = {
     ],
     'libraryName': 'TaclUI', // cdn global name
     'cdnFileName': 'taclui',
-    'version': '0.0.26',
+    'version': '0.0.29',
     'npmExternals': {
         // example
         // 'md5': 'md5'

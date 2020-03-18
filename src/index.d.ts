@@ -76,6 +76,9 @@ declare interface DragParameters {
     preventDefault?:boolean;
     reinitPosition?:boolean;
     margin?:number|Array<number>;
+    onDragStart?: (event: Event, x: number, y: number) => {};
+    onDragMove?: (event: Event, x: number, y: number) => {};
+    onDragEnd?: (event: Event, x: number, y: number) => {};
 }
 
 declare class Drag {

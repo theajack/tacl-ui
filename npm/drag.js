@@ -46,6 +46,12 @@ function () {
         onClick = _ref$onClick === void 0 ? df : _ref$onClick,
         _ref$onSideChange = _ref.onSideChange,
         onSideChange = _ref$onSideChange === void 0 ? df : _ref$onSideChange,
+        _ref$onDragStart = _ref.onDragStart,
+        onDragStart = _ref$onDragStart === void 0 ? df : _ref$onDragStart,
+        _ref$onDragMove = _ref.onDragMove,
+        onDragMove = _ref$onDragMove === void 0 ? df : _ref$onDragMove,
+        _ref$onDragEnd = _ref.onDragEnd,
+        onDragEnd = _ref$onDragEnd === void 0 ? df : _ref$onDragEnd,
         _ref$zIndex = _ref.zIndex,
         zIndex = _ref$zIndex === void 0 ? 100 : _ref$zIndex,
         _ref$delay = _ref.delay,
@@ -102,6 +108,9 @@ function () {
 
     this.aside = aside; // 是否吸附在两侧
 
+    this.onDragStart = onDragStart;
+    this.onDragMove = onDragMove;
+    this.onDragEnd = onDragEnd;
     this.touchActiveInit(zIndex);
     this.initPosition(true);
 
@@ -191,6 +200,7 @@ function () {
 
       this.starX = e.touches[0].clientX;
       this.starY = e.touches[0].clientY;
+      this.onDragStart.call(this, e, this.starX, this.starY);
     }
   }, {
     key: "touchMove",
@@ -219,6 +229,7 @@ function () {
 
       if (this.enableDrag) {
         this.setPosition(this.moveX, this.moveY);
+        this.onDragMove.call(this, e, this.moveX, this.moveY);
       }
     }
   }, {
@@ -271,6 +282,8 @@ function () {
           dom.style.transition = '';
         }, 200);
       }
+
+      this.onDragEnd.call(this, e, endX, endY);
     }
   }]);
 

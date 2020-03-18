@@ -1,6 +1,6 @@
 {
   "name": "tacl-ui",
-  "version": "0.0.26",
+  "version": "0.0.29",
   "description": "一套taost、confirm、loading、alert、drag的简单ui组件",
   "main": "index.js",
   "keywords": [
