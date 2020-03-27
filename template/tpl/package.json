@@ -3,6 +3,8 @@
   "version": "${version}",
   "description": "一套taost、confirm、loading、alert、drag的简单ui组件",
   "main": "index.js",
+  "unpkg": "taclui.min.js",
+  "jsdelivr": "taclui.min.js",
   "keywords": [
     "tacl-ui"
   ],
