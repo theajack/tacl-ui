@@ -5,7 +5,7 @@
         confirmText:'confirm',
         cancelText:'cancel',
         cancelBtn:false,// 是否需要取消按钮
-        theme:'default', // gamer
+        theme:'default', // gamer/yellow
     }).then((confirm)=>{
         if (confirm) {
             
@@ -45,12 +45,13 @@ function init (c, t, resolve) {
         let btnw = $.create().cls('btn-w');
         let btnCancel = $.create().cls('btn');
         let btnConfirm = $.create().cls('btn confirm');
+        let btnClose = $.create().cls('close').text('✕');
         $.clearClassPrefix();
         initTaclUI(mask);
         $.query(document.body).append(
             mask.append(
                 box.append(
-                    title, content, btnw.append(btnCancel, btnConfirm)
+                    title, content, btnw.append(btnCancel, btnConfirm), btnClose
                 )
             )
         );
@@ -59,16 +60,19 @@ function init (c, t, resolve) {
         el.content = content;
         el.btnCancel = btnCancel;
         el.btnConfirm = btnConfirm;
+        el.btnClose = btnClose;
         el.mask = mask;
     }
     let confirmText = '确定';
     let cancelText = '取消';
     let cancelBtn = true;
+    let closeBtn = true;
     let theme = 'default';
     if (typeof c === 'object') {
         if (c.cancelText) { cancelText = c.cancelText; }
         if (c.confirmText) { confirmText = c.confirmText; }
         if (typeof c.cancelBtn === 'boolean') { cancelBtn = c.cancelBtn; }
+        if (typeof c.closeBtn === 'boolean') { closeBtn = c.closeBtn; }
         if (c.theme) { theme = c.theme; }
         t = c.title;
         c = c.text;
@@ -78,12 +82,14 @@ function init (c, t, resolve) {
     el.btnConfirm.text(confirmText);
     el.btnCancel.text(cancelText);
     el.btnCancel.style('display', cancelBtn ? 'block' : 'none');
+    el.btnClose.style('display', closeBtn ? 'block' : 'none');
     el.btnCancel.click(() => { resolve(false); close(); });
     el.btnConfirm.click(() => { resolve(true); close(); });
-    if (theme === 'gamer') {
-        el.box.addClass(`${prefix}gamer`);
+    el.btnClose.click(() => { resolve(true); close(); });
+    if (theme === 'gamer' || theme === 'yellow') {
+        el.box.addClass(`${prefix}yellow`);
     } else {
-        el.box.rmClass(`${prefix}gamer`);
+        el.box.rmClass(`${prefix}yellow`);
     }
     open();
 }
@@ -158,14 +164,14 @@ function initStyle (common) {
         color:#5185d5;
         border-right:none;
     }
-    .g-confirm-box.g-confirm-gamer{
+    .g-confirm-box.g-confirm-yellow{
         padding: 20px;
         width: 90%;
     }
-    .g-confirm-gamer .g-confirm-btn-w{
+    .g-confirm-yellow .g-confirm-btn-w{
         border: none;
     }
-    .g-confirm-gamer .g-confirm-btn{
+    .g-confirm-yellow .g-confirm-btn{
         border: 1px solid #bbb;
         color: #bbb;
         padding: 6px;
@@ -173,7 +179,15 @@ function initStyle (common) {
         border-radius: 20px;
         max-width: 120px;
     }
-    .g-confirm-gamer .g-confirm-confirm{
+    .g-confirm-close{
+        position: absolute;
+        right: 10px;
+        top: 6px;
+        font-size: 17px;
+        color: #888;
+        cursor: pointer;
+    }
+    .g-confirm-yellow .g-confirm-confirm{
         border: 1px solid rgb(255,223,83);
         background-color: rgb(255,223,83);
         color: #555;

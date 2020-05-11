@@ -43,23 +43,27 @@ function init(c, t, resolve) {
 
     var btnConfirm = _style.$.create().cls('btn confirm');
 
+    var btnClose = _style.$.create().cls('close').text('✕');
+
     _style.$.clearClassPrefix();
 
     (0, _style.initTaclUI)(mask);
 
-    _style.$.query(document.body).append(mask.append(box.append(title, content, btnw.append(btnCancel, btnConfirm))));
+    _style.$.query(document.body).append(mask.append(box.append(title, content, btnw.append(btnCancel, btnConfirm), btnClose)));
 
     el.box = box;
     el.title = title;
     el.content = content;
     el.btnCancel = btnCancel;
     el.btnConfirm = btnConfirm;
+    el.btnClose = btnClose;
     el.mask = mask;
   }
 
   var confirmText = '确定';
   var cancelText = '取消';
   var cancelBtn = true;
+  var closeBtn = true;
   var theme = 'default';
 
   if (_typeof(c) === 'object') {
@@ -75,6 +79,10 @@ function init(c, t, resolve) {
       cancelBtn = c.cancelBtn;
     }
 
+    if (typeof c.closeBtn === 'boolean') {
+      closeBtn = c.closeBtn;
+    }
+
     if (c.theme) {
       theme = c.theme;
     }
@@ -88,6 +96,7 @@ function init(c, t, resolve) {
   el.btnConfirm.text(confirmText);
   el.btnCancel.text(cancelText);
   el.btnCancel.style('display', cancelBtn ? 'block' : 'none');
+  el.btnClose.style('display', closeBtn ? 'block' : 'none');
   el.btnCancel.click(function () {
     resolve(false);
     close();
@@ -96,11 +105,15 @@ function init(c, t, resolve) {
     resolve(true);
     close();
   });
+  el.btnClose.click(function () {
+    resolve(true);
+    close();
+  });
 
-  if (theme === 'gamer') {
-    el.box.addClass("".concat(prefix, "gamer"));
+  if (theme === 'gamer' || theme === 'yellow') {
+    el.box.addClass("".concat(prefix, "yellow"));
   } else {
-    el.box.rmClass("".concat(prefix, "gamer"));
+    el.box.rmClass("".concat(prefix, "yellow"));
   }
 
   open();
@@ -123,7 +136,7 @@ function close() {
 function initStyle(common) {
   return (
     /* css*/
-    "\n    .g-confirm-mask {\n        ".concat(common.piece.mask, "\n    }\n    .g-confirm-mask.g-confirm-open {\n        background-color:rgba(0,0,0,.4);\n    }\n    .g-confirm-box {\n        width:80%;\n        background-color:#fff;\n        position:absolute;\n        left:50%;\n        transform:translate(-50%,-50%);\n        border-radius:3px;\n        box-sizing:border-box;\n        opacity:0;\n        top:55%;\n        transition:all .3s ease;\n        max-width: 320px;\n    }\n    .g-confirm-mask.g-confirm-open .g-confirm-box {\n        opacity:1;\n        top:50%;\n    }\n    .g-confirm-title {\n        font-size:18px;\n        text-align:center;\n        font-weight:bold;\n        padding-top:15px;\n    }\n    .g-confirm-content {\n        padding:15px;\n        font-size:18px;\n        line-height:25px;\n        text-align:center;\n        color:#888;\n        ").concat(common.piece.overScroll, "\n    }\n    .g-confirm-btn-w {\n        display:flex;\n        border-top:1px solid #eee;\n        justify-content: center;\n    }\n    .g-confirm-btn {\n        flex:1;\n        text-align:center;\n        padding:12px;\n        cursor:pointer;\n    }\n    .g-confirm-btn{\n        border-right:1px solid #eee;\n    }\n    .g-confirm-confirm {\n        color:#5185d5;\n        border-right:none;\n    }\n    .g-confirm-box.g-confirm-gamer{\n        padding: 20px;\n        width: 90%;\n    }\n    .g-confirm-gamer .g-confirm-btn-w{\n        border: none;\n    }\n    .g-confirm-gamer .g-confirm-btn{\n        border: 1px solid #bbb;\n        color: #bbb;\n        padding: 6px;\n        margin: 0 20px;\n        border-radius: 20px;\n        max-width: 120px;\n    }\n    .g-confirm-gamer .g-confirm-confirm{\n        border: 1px solid rgb(255,223,83);\n        background-color: rgb(255,223,83);\n        color: #555;\n    }")
+    "\n    .g-confirm-mask {\n        ".concat(common.piece.mask, "\n    }\n    .g-confirm-mask.g-confirm-open {\n        background-color:rgba(0,0,0,.4);\n    }\n    .g-confirm-box {\n        width:80%;\n        background-color:#fff;\n        position:absolute;\n        left:50%;\n        transform:translate(-50%,-50%);\n        border-radius:3px;\n        box-sizing:border-box;\n        opacity:0;\n        top:55%;\n        transition:all .3s ease;\n        max-width: 320px;\n    }\n    .g-confirm-mask.g-confirm-open .g-confirm-box {\n        opacity:1;\n        top:50%;\n    }\n    .g-confirm-title {\n        font-size:18px;\n        text-align:center;\n        font-weight:bold;\n        padding-top:15px;\n    }\n    .g-confirm-content {\n        padding:15px;\n        font-size:18px;\n        line-height:25px;\n        text-align:center;\n        color:#888;\n        ").concat(common.piece.overScroll, "\n    }\n    .g-confirm-btn-w {\n        display:flex;\n        border-top:1px solid #eee;\n        justify-content: center;\n    }\n    .g-confirm-btn {\n        flex:1;\n        text-align:center;\n        padding:12px;\n        cursor:pointer;\n    }\n    .g-confirm-btn{\n        border-right:1px solid #eee;\n    }\n    .g-confirm-confirm {\n        color:#5185d5;\n        border-right:none;\n    }\n    .g-confirm-box.g-confirm-yellow{\n        padding: 20px;\n        width: 90%;\n    }\n    .g-confirm-yellow .g-confirm-btn-w{\n        border: none;\n    }\n    .g-confirm-yellow .g-confirm-btn{\n        border: 1px solid #bbb;\n        color: #bbb;\n        padding: 6px;\n        margin: 0 20px;\n        border-radius: 20px;\n        max-width: 120px;\n    }\n    .g-confirm-close{\n        position: absolute;\n        right: 10px;\n        top: 6px;\n        font-size: 17px;\n        color: #888;\n        cursor: pointer;\n    }\n    .g-confirm-yellow .g-confirm-confirm{\n        border: 1px solid rgb(255,223,83);\n        background-color: rgb(255,223,83);\n        color: #555;\n    }")
   );
 }
 
