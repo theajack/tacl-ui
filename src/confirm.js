@@ -67,12 +67,20 @@ function init (c, t, resolve) {
     let cancelText = '取消';
     let cancelBtn = true;
     let closeBtn = true;
+    let onclose = () => {close();};
     let theme = 'default';
     if (typeof c === 'object') {
         if (c.cancelText) { cancelText = c.cancelText; }
         if (c.confirmText) { confirmText = c.confirmText; }
         if (typeof c.cancelBtn === 'boolean') { cancelBtn = c.cancelBtn; }
         if (typeof c.closeBtn === 'boolean') { closeBtn = c.closeBtn; }
+        if (typeof c.onclose === 'function') {
+            let _close = c.onclose;
+            onclose = () => {
+                close();
+                _close();
+            };
+        }
         if (c.theme) { theme = c.theme; }
         t = c.title;
         c = c.text;
@@ -85,7 +93,7 @@ function init (c, t, resolve) {
     el.btnClose.style('display', closeBtn ? 'block' : 'none');
     el.btnCancel.click(() => { resolve(false); close(); });
     el.btnConfirm.click(() => { resolve(true); close(); });
-    el.btnClose.click(() => { resolve(true); close(); });
+    el.btnClose.el.onclick = () => { onclose(); };
     if (theme === 'gamer' || theme === 'yellow') {
         el.box.addClass(`${prefix}yellow`);
     } else {
