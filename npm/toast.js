@@ -85,7 +85,10 @@ function close() {
     window.setTimeout(function () {
       el.wrapper.style('display', 'none');
     }, 350);
+    return true;
   }
+
+  return false;
 }
 
 function initStyle(common) {

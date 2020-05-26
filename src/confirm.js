@@ -33,6 +33,7 @@ function confirm (text, title) {
         }
     });
 }
+confirm.close = close;
 
 function init (c, t, resolve) {
     if (el === null) {
@@ -94,6 +95,7 @@ function init (c, t, resolve) {
     el.btnCancel.click(() => { resolve(false); close(); });
     el.btnConfirm.click(() => { resolve(true); close(); });
     el.btnClose.el.onclick = () => { onclose(); };
+    
     if (theme === 'gamer' || theme === 'yellow') {
         el.box.addClass(`${prefix}yellow`);
     } else {
@@ -103,16 +105,22 @@ function init (c, t, resolve) {
 }
 
 function open () {
+    el.isOpen = true;
     el.mask.style('display', 'block');
     window.setTimeout(() => {
         el.mask.addClass(prefix + 'open');
     }, 10);
 }
 function close () {
-    el.mask.rmClass(prefix + 'open');
-    window.setTimeout(() => {
-        el.mask.style('display', 'none');
-    }, 350);
+    if (el && el.isOpen) {
+        el.isOpen = false;
+        el.mask.rmClass(prefix + 'open');
+        window.setTimeout(() => {
+            el.mask.style('display', 'none');
+        }, 350);
+        return true;
+    }
+    return false;
 }
 
 function initStyle (common) {

@@ -11,7 +11,7 @@ declare interface ToasterOpts {
 export interface ToastStatic {
     (opts?: ToasterOpts): void;
     (text?: string, time?: number, position?: 'top'|'middle'|'bottom'): void;
-    close(): void;
+    close(): boolean;
 }
 
 export const toast: ToastStatic;
@@ -22,12 +22,15 @@ declare interface ConfirmerOpts {
     confirmText?:string;
     cancelText?:string;
     cancelBtn?:boolean;
-    theme?:'gamer'|'default';
+    closeBtn?:boolean;
+    onclose?:Function;
+    theme?:'gamer'|'yellow'|'default';
 }
 
 export interface ConfirmStatic {
     (opts?: ConfirmerOpts): Promise<boolean>;
     (text?: string, title?:string): Promise<boolean>;
+    close(): boolean;
 }
 
 export const confirm: ConfirmStatic;
@@ -36,7 +39,10 @@ declare interface AlerterOpts {
     text?:string;
     title?:string;
     confirmText?:string;
-    theme?:'gamer'|'default';
+    closeBtn?:boolean;
+    onclose?:Function;
+    theme?:'gamer'|'yellow'|'default';
+    close(): boolean;
 }
 
 export interface AlertStatic {

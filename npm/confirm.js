@@ -23,6 +23,8 @@ function confirm(text, title) {
   });
 }
 
+confirm.close = close;
+
 function init(c, t, resolve) {
   if (el === null) {
     el = {};
@@ -135,6 +137,7 @@ function init(c, t, resolve) {
 }
 
 function open() {
+  el.isOpen = true;
   el.mask.style('display', 'block');
   window.setTimeout(function () {
     el.mask.addClass(prefix + 'open');
@@ -142,10 +145,16 @@ function open() {
 }
 
 function close() {
-  el.mask.rmClass(prefix + 'open');
-  window.setTimeout(function () {
-    el.mask.style('display', 'none');
-  }, 350);
+  if (el && el.isOpen) {
+    el.isOpen = false;
+    el.mask.rmClass(prefix + 'open');
+    window.setTimeout(function () {
+      el.mask.style('display', 'none');
+    }, 350);
+    return true;
+  }
+
+  return false;
 }
 
 function initStyle(common) {

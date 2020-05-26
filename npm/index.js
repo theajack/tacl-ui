@@ -47,6 +47,7 @@ var alert = function alert(text, title) {
 };
 
 exports.alert = alert;
+alert.close = _confirm2["default"].close;
 
 var drag = function drag(opts) {
   return new _drag["default"](opts);

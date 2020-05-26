@@ -25,6 +25,8 @@ export let alert = (text, title) => {
     }
     return confirm(text);
 };
+alert.close = _confirm.close;
+
 export let drag = (opts) => {
     return new Drag(opts);
 };

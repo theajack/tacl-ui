@@ -60,8 +60,9 @@ function close () {
         window.setTimeout(() => {
             el.wrapper.style('display', 'none');
         }, 350);
+        return true;
     }
-
+    return false;
 }
 
 function initStyle (common) {
