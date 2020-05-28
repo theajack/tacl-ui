@@ -1,6 +1,6 @@
 {
     "name": "tacl-ui",
-    "version": "0.0.34",
+    "version": "0.0.35",
     "description": "一套taost、confirm、loading、alert、drag的简单ui组件",
     "scripts": {
         "build:cdn": "webpack --config webpack-config/build.js --env.mode=script && npm run copy-latest",
@@ -35,7 +35,7 @@
         "babel-eslint": "^10.0.3",
         "babel-loader": "^8.0.6",
         "babel-plugin-transform-object-rest-spread": "^6.26.0",
-        "easy-dom-util": "0.0.25",
+        "easy-dom-util": "0.0.26",
         "eslint": "^6.5.1",
         "eslint-config-standard": "^14.1.0",
         "eslint-loader": "^3.0.2",

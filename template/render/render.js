@@ -7,8 +7,10 @@ let renderConfig = require('./render.config');
 let dir = './template/';
 let target = renderConfig.target;
 let tpl = renderConfig.tpl;
+let version = '';
 
-function render () {
+function render (v) {
+    version = v || defultConfig.data['package.json'].easyDomVersion;
     formatDefaultConfig();
 
     target.forEach((targetName) => {
@@ -67,7 +69,8 @@ function writeSync (path, file, content) {
 
 function renderTemplate (str, json) {
     for (var k in json) {
-        str = str.replace(new RegExp('\\${' + k + '}', 'g'), json[k]);
+        let value = (k === 'easyDomVersion') ? version : json[k];
+        str = str.replace(new RegExp('\\${' + k + '}', 'g'), value);
     }
     return str;
 }
