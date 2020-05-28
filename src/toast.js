@@ -74,6 +74,7 @@ function initStyle (common) {
         transition:opacity .3s ease;
         padding: 8px 10px;
         z-index: 10000;
+        position: fixed;
     }
     .g-toast-wrapper.g-toast-bottom{
         top: 90%;

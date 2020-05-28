@@ -94,7 +94,7 @@ function close() {
 function initStyle(common) {
   return (
     /* css*/
-    "\n    .g-toast-wrapper {\n        ".concat(common.piece.centerWrapper, "\n        ").concat(common.piece.overScroll, "\n        opacity:0;\n        transition:opacity .3s ease;\n        padding: 8px 10px;\n        z-index: 10000;\n    }\n    .g-toast-wrapper.g-toast-bottom{\n        top: 90%;\n    }\n    .g-toast-wrapper.g-toast-top{\n        top: 8%;\n    }\n    .g-toast-wrapper.g-toast-bottom{\n        top: 90%;\n    }\n    .g-toast-wrapper.g-toast-open {\n        opacity:1;\n    }")
+    "\n    .g-toast-wrapper {\n        ".concat(common.piece.centerWrapper, "\n        ").concat(common.piece.overScroll, "\n        opacity:0;\n        transition:opacity .3s ease;\n        padding: 8px 10px;\n        z-index: 10000;\n        position: fixed;\n    }\n    .g-toast-wrapper.g-toast-bottom{\n        top: 90%;\n    }\n    .g-toast-wrapper.g-toast-top{\n        top: 8%;\n    }\n    .g-toast-wrapper.g-toast-bottom{\n        top: 90%;\n    }\n    .g-toast-wrapper.g-toast-open {\n        opacity:1;\n    }")
   );
 }
 
