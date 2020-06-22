@@ -1,6 +1,6 @@
 {
     "name": "tacl-ui",
-    "version": "0.0.36",
+    "version": "0.0.37",
     "description": "一套taost、confirm、loading、alert、drag的简单ui组件",
     "scripts": {
         "build:cdn": "webpack --config webpack-config/build.js --env.mode=script && npm run copy-latest",

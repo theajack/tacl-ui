@@ -27,15 +27,15 @@ let prefix = 'g-confirm-';
 function confirm (text, title) {
     return new Promise((resolve, reject) => {
         try {
-            init(text, title, resolve);
+            init(text, title, resolve, reject);
         } catch (e) {
             reject(e);
         }
-    });
+    }).catch(() => {});
 }
 confirm.close = close;
 
-function init (c, t, resolve) {
+function init (c, t, resolve, reject) {
     if (el === null) {
         el = {};
         $.classPrefix(prefix);
@@ -94,7 +94,7 @@ function init (c, t, resolve) {
     el.btnClose.style('display', closeBtn ? 'block' : 'none');
     el.btnCancel.click(() => { resolve(false); close(); });
     el.btnConfirm.click(() => { resolve(true); close(); });
-    el.btnClose.el.onclick = () => { onclose(); };
+    el.btnClose.el.onclick = () => { onclose(); reject('close');};
     
     if (theme === 'gamer' || theme === 'yellow') {
         el.box.addClass(`${prefix}yellow`);

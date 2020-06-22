@@ -16,16 +16,16 @@ var prefix = 'g-confirm-';
 function confirm(text, title) {
   return new Promise(function (resolve, reject) {
     try {
-      init(text, title, resolve);
+      init(text, title, resolve, reject);
     } catch (e) {
       reject(e);
     }
-  });
+  })["catch"](function () {});
 }
 
 confirm.close = close;
 
-function init(c, t, resolve) {
+function init(c, t, resolve, reject) {
   if (el === null) {
     el = {};
 
@@ -125,6 +125,7 @@ function init(c, t, resolve) {
 
   el.btnClose.el.onclick = function () {
     onclose();
+    reject('close');
   };
 
   if (theme === 'gamer' || theme === 'yellow') {
