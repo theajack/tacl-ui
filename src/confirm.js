@@ -23,19 +23,23 @@ reportStyle(initStyle);
 
 let el = null;
 let prefix = 'g-confirm-';
-
+let onhide = null;
+let onopen = null;
 function confirm (text, title) {
+    if(onhide){onhide();} // 关闭上一个
+    onhide = null;
+    onopen = null;
     return new Promise((resolve, reject) => {
         try {
-            init(text, title, resolve, reject);
+            init(text, title, resolve);
         } catch (e) {
             reject(e);
         }
-    }).catch(() => {});
+    });
 }
 confirm.close = close;
 
-function init (c, t, resolve, reject) {
+function init (c, t, resolve) {
     if (el === null) {
         el = {};
         $.classPrefix(prefix);
@@ -49,7 +53,9 @@ function init (c, t, resolve, reject) {
         let btnClose = $.create().cls('close').text('✕');
         $.clearClassPrefix();
         initTaclUI(mask);
-        $.query(document.body).append(
+        
+        let parent = $.query((typeof c==='object'&&c.parent)?c.parent:document.body);
+        parent.append(
             mask.append(
                 box.append(
                     title, content, btnw.append(btnCancel, btnConfirm), btnClose
@@ -64,26 +70,20 @@ function init (c, t, resolve, reject) {
         el.btnClose = btnClose;
         el.mask = mask;
     }
+    onhide = (typeof c === 'object' && c.onhide)?c.onhide:null;
     let confirmText = '确定';
     let cancelText = '取消';
     let cancelBtn = true;
     let closeBtn = true;
-    let onclose = () => {close();};
     let theme = 'default';
     if (typeof c === 'object') {
         if (c.cancelText) { cancelText = c.cancelText; }
         if (c.confirmText) { confirmText = c.confirmText; }
         if (typeof c.cancelBtn === 'boolean') { cancelBtn = c.cancelBtn; }
         if (typeof c.closeBtn === 'boolean') { closeBtn = c.closeBtn; }
-        if (typeof c.onclose === 'function') {
-            let _close = c.onclose;
-            onclose = () => {
-                close();
-                _close();
-            };
-        }
         if (c.theme) { theme = c.theme; }
         t = c.title;
+        onopen = c.onopen;
         c = c.text;
     }
     el.title.text(t || '提示');
@@ -92,9 +92,9 @@ function init (c, t, resolve, reject) {
     el.btnCancel.text(cancelText);
     el.btnCancel.style('display', cancelBtn ? 'block' : 'none');
     el.btnClose.style('display', closeBtn ? 'block' : 'none');
-    el.btnCancel.click(() => { resolve(false); close(); });
-    el.btnConfirm.click(() => { resolve(true); close(); });
-    el.btnClose.el.onclick = () => { onclose(); reject('close');};
+    el.btnCancel.el.onclick = () => { resolve('cancel'); close(); };
+    el.btnConfirm.el.onclick = () => { resolve('confirm'); close(); };
+    el.btnClose.el.onclick = () => { resolve('close'); close();};
     
     if (theme === 'gamer' || theme === 'yellow') {
         el.box.addClass(`${prefix}yellow`);
@@ -108,8 +108,11 @@ function open () {
     el.isOpen = true;
     el.mask.style('display', 'block');
     window.setTimeout(() => {
+        if(onopen){
+            onopen(el.mask);
+        }
         el.mask.addClass(prefix + 'open');
-    }, 10);
+    }, 20);
 }
 function close () {
     if (el && el.isOpen) {
@@ -117,6 +120,10 @@ function close () {
         el.mask.rmClass(prefix + 'open');
         window.setTimeout(() => {
             el.mask.style('display', 'none');
+            if(onhide) {
+                onhide();
+                onhide = null
+            }
         }, 350);
         return true;
     }

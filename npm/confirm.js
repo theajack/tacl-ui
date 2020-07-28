@@ -12,20 +12,29 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 (0, _style.reportStyle)(initStyle);
 var el = null;
 var prefix = 'g-confirm-';
+var onhide = null;
+var onopen = null;
 
 function confirm(text, title) {
+  if (onhide) {
+    onhide();
+  } // 关闭上一个
+
+
+  onhide = null;
+  onopen = null;
   return new Promise(function (resolve, reject) {
     try {
-      init(text, title, resolve, reject);
+      init(text, title, resolve);
     } catch (e) {
       reject(e);
     }
-  })["catch"](function () {});
+  });
 }
 
 confirm.close = close;
 
-function init(c, t, resolve, reject) {
+function init(c, t, resolve) {
   if (el === null) {
     el = {};
 
@@ -51,8 +60,9 @@ function init(c, t, resolve, reject) {
 
     (0, _style.initTaclUI)(mask);
 
-    _style.$.query(document.body).append(mask.append(box.append(title, content, btnw.append(btnCancel, btnConfirm), btnClose)));
+    var parent = _style.$.query(_typeof(c) === 'object' && c.parent ? c.parent : document.body);
 
+    parent.append(mask.append(box.append(title, content, btnw.append(btnCancel, btnConfirm), btnClose)));
     el.box = box;
     el.title = title;
     el.content = content;
@@ -62,15 +72,11 @@ function init(c, t, resolve, reject) {
     el.mask = mask;
   }
 
+  onhide = _typeof(c) === 'object' && c.onhide ? c.onhide : null;
   var confirmText = '确定';
   var cancelText = '取消';
   var cancelBtn = true;
   var closeBtn = true;
-
-  var onclose = function onclose() {
-    close();
-  };
-
   var theme = 'default';
 
   if (_typeof(c) === 'object') {
@@ -90,21 +96,12 @@ function init(c, t, resolve, reject) {
       closeBtn = c.closeBtn;
     }
 
-    if (typeof c.onclose === 'function') {
-      var _close = c.onclose;
-
-      onclose = function onclose() {
-        close();
-
-        _close();
-      };
-    }
-
     if (c.theme) {
       theme = c.theme;
     }
 
     t = c.title;
+    onopen = c.onopen;
     c = c.text;
   }
 
@@ -114,18 +111,20 @@ function init(c, t, resolve, reject) {
   el.btnCancel.text(cancelText);
   el.btnCancel.style('display', cancelBtn ? 'block' : 'none');
   el.btnClose.style('display', closeBtn ? 'block' : 'none');
-  el.btnCancel.click(function () {
-    resolve(false);
+
+  el.btnCancel.el.onclick = function () {
+    resolve('cancel');
     close();
-  });
-  el.btnConfirm.click(function () {
-    resolve(true);
+  };
+
+  el.btnConfirm.el.onclick = function () {
+    resolve('confirm');
     close();
-  });
+  };
 
   el.btnClose.el.onclick = function () {
-    onclose();
-    reject('close');
+    resolve('close');
+    close();
   };
 
   if (theme === 'gamer' || theme === 'yellow') {
@@ -141,8 +140,12 @@ function open() {
   el.isOpen = true;
   el.mask.style('display', 'block');
   window.setTimeout(function () {
+    if (onopen) {
+      onopen(el.mask);
+    }
+
     el.mask.addClass(prefix + 'open');
-  }, 10);
+  }, 20);
 }
 
 function close() {
@@ -151,6 +154,11 @@ function close() {
     el.mask.rmClass(prefix + 'open');
     window.setTimeout(function () {
       el.mask.style('display', 'none');
+
+      if (onhide) {
+        onhide();
+        onhide = null;
+      }
     }, 350);
     return true;
   }

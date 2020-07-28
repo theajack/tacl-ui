@@ -1,20 +1,31 @@
 import {$, reportStyle, initTaclUI} from './style';
 
 let el = null;
+let timer = null;
 let prefix = 'g-loading-';
 
 reportStyle(initStyle);
-
+let onhide = null;
+let onopen = null;
 function loading (text, time) {
+    let parent;
+    if(onhide){onhide();}
+    onhide = null;
+    onopen = null;
     if (typeof text === 'object') {
+        parent = text.parent;
         time = text.time;
+        if(text.onhide){
+            onhide = text.onhide;
+        }
+        onopen = text.onopen;
         text = text.text;
     }
-    init(text, time);
+    init(text, time, parent);
 }
 loading.close = close;
 
-function init (text, time) {
+function init (text, time, parent = document.body) {
     if (el === null) {
         el = {};
         $.classPrefix(prefix);
@@ -29,13 +40,13 @@ function init (text, time) {
         wrapper.append(el.text);
         $.clearClassPrefix();
         initTaclUI(mask);
-        $.query(document.body).append(
+        $.query(parent).append(
             mask.append(wrapper)
         );
         el.mask = mask;
         el.wrapper = wrapper;
     }
-    open(text, time);
+    open(text, time, onhide);
 }
 
 function open (text, time) {
@@ -44,10 +55,12 @@ function open (text, time) {
     el.mask.style('display', 'block');
     el.text.text(text);
     window.setTimeout(() => {
+        if(onopen) onopen(el.mask);
         el.wrapper.addClass(prefix + 'open');
-    }, 10);
+    }, 20);
     if (autoClose) {
-        setTimeout(() => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
             close();
         }, time);
     }
@@ -59,6 +72,10 @@ function close () {
         window.setTimeout(() => {
             el.mask.style('display', 'none');
             el.text.text('');
+            if(onhide) {
+                onhide();
+                onhide = null
+            }
         }, 350);
     }
 }

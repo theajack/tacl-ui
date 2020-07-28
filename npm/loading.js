@@ -10,21 +10,42 @@ var _style = require("./style");
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 var el = null;
+var timer = null;
 var prefix = 'g-loading-';
 (0, _style.reportStyle)(initStyle);
+var onhide = null;
+var onopen = null;
 
 function loading(text, time) {
+  var parent;
+
+  if (onhide) {
+    onhide();
+  }
+
+  onhide = null;
+  onopen = null;
+
   if (_typeof(text) === 'object') {
+    parent = text.parent;
     time = text.time;
+
+    if (text.onhide) {
+      onhide = text.onhide;
+    }
+
+    onopen = text.onopen;
     text = text.text;
   }
 
-  init(text, time);
+  init(text, time, parent);
 }
 
 loading.close = close;
 
 function init(text, time) {
+  var parent = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : document.body;
+
   if (el === null) {
     el = {};
 
@@ -43,13 +64,13 @@ function init(text, time) {
 
     (0, _style.initTaclUI)(mask);
 
-    _style.$.query(document.body).append(mask.append(wrapper));
+    _style.$.query(parent).append(mask.append(wrapper));
 
     el.mask = mask;
     el.wrapper = wrapper;
   }
 
-  open(text, time);
+  open(text, time, onhide);
 }
 
 function open(text, time) {
@@ -58,11 +79,13 @@ function open(text, time) {
   el.mask.style('display', 'block');
   el.text.text(text);
   window.setTimeout(function () {
+    if (onopen) onopen(el.mask);
     el.wrapper.addClass(prefix + 'open');
-  }, 10);
+  }, 20);
 
   if (autoClose) {
-    setTimeout(function () {
+    clearTimeout(timer);
+    timer = setTimeout(function () {
       close();
     }, time);
   }
@@ -75,6 +98,11 @@ function close() {
     window.setTimeout(function () {
       el.mask.style('display', 'none');
       el.text.text('');
+
+      if (onhide) {
+        onhide();
+        onhide = null;
+      }
     }, 350);
   }
 }

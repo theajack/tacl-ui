@@ -15,17 +15,36 @@ var TOAST_POSITION = {
   BOTTOM: 'bottom'
 };
 var el = null;
+var timer = null;
 var prefix = 'g-toast-';
 (0, _style.reportStyle)(initStyle);
+var onhide = null;
+var onopen = null;
 
 function toast(text, time, position) {
+  var parent;
+
+  if (onhide) {
+    onhide();
+  }
+
+  onhide = null;
+  onopen = null;
+
   if (_typeof(text) === 'object') {
     time = text.time;
     position = text.position;
+    parent = text.parent;
+
+    if (text.onhide) {
+      onhide = text.onhide;
+    }
+
+    onopen = text.onopen;
     text = text.text;
   }
 
-  init(text, time, position);
+  init(text, time, position, parent);
 }
 
 toast.close = close;
@@ -34,6 +53,7 @@ function init() {
   var text = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
   var time = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 2000;
   var position = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : TOAST_POSITION.MIDDLE;
+  var parent = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : document.body;
 
   if (el === null) {
     el = {};
@@ -46,7 +66,7 @@ function init() {
 
     (0, _style.initTaclUI)(wrapper);
 
-    _style.$.query(document.body).append(wrapper);
+    _style.$.query(parent).append(wrapper);
 
     el.wrapper = wrapper;
   }
@@ -68,11 +88,13 @@ function open(text, time, position) {
   }
 
   window.setTimeout(function () {
+    if (onopen) onopen(el.wrapper);
     el.wrapper.addClass(prefix + 'open');
-  }, 10);
+  }, 20);
 
   if (autoClose) {
-    setTimeout(function () {
+    clearTimeout(timer);
+    timer = setTimeout(function () {
       close();
     }, time);
   }
@@ -84,6 +106,13 @@ function close() {
     el.wrapper.rmClass(prefix + 'open');
     window.setTimeout(function () {
       el.wrapper.style('display', 'none');
+
+      if (onhide) {
+        onhide();
+        onhide = null;
+      }
+
+      ;
     }, 350);
     return true;
   }

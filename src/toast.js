@@ -7,28 +7,39 @@ const TOAST_POSITION = {
 };
 
 let el = null;
+let timer = null;
 const prefix = 'g-toast-';
 
 reportStyle(initStyle);
-
+let onhide = null;
+let onopen = null;
 function toast (text, time, position) {
+    let parent;
+    if(onhide){onhide();}
+    onhide = null;
+    onopen = null;
     if (typeof text === 'object') {
         time = text.time;
         position = text.position;
+        parent = text.parent;
+        if (text.onhide) {
+            onhide = text.onhide;
+        }
+        onopen = text.onopen;
         text = text.text;
     }
-    init(text, time, position);
+    init(text, time, position, parent);
 }
 toast.close = close;
 
-function init (text = '', time = 2000, position = TOAST_POSITION.MIDDLE) {
+function init (text = '', time = 2000, position = TOAST_POSITION.MIDDLE, parent = document.body) {
     if (el === null) {
         el = {};
         $.classPrefix(prefix);
         let wrapper = $.create().cls('wrapper');
         $.clearClassPrefix();
         initTaclUI(wrapper);
-        $.query(document.body).append(wrapper);
+        $.query(parent).append(wrapper);
         el.wrapper = wrapper;
     }
     open(text, time, position);
@@ -45,10 +56,12 @@ function open (text, time, position) {
         el.wrapper.text(text);
     }
     window.setTimeout(() => {
+        if(onopen) onopen(el.wrapper);
         el.wrapper.addClass(prefix + 'open');
-    }, 10);
+    }, 20);
     if (autoClose) {
-        setTimeout(() => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
             close();
         }, time);
     }
@@ -59,6 +72,10 @@ function close () {
         el.wrapper.rmClass(prefix + 'open');
         window.setTimeout(() => {
             el.wrapper.style('display', 'none');
+            if (onhide) {
+                onhide()
+                onhide = null;
+            };
         }, 350);
         return true;
     }

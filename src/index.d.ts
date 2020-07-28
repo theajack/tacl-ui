@@ -2,10 +2,13 @@ import {Ele, ToolStatic} from 'easy-dom-util';
 
 export const tool: ToolStatic;
 
+declare type DomEle = Ele | HTMLElement | string;
 declare interface ToasterOpts {
     text?: string;
     time?: number;
     position?: 'top'|'middle'|'bottom';
+    parent?: DomEle;
+    onhide?(): void;
 }
 
 export interface ToastStatic {
@@ -16,6 +19,8 @@ export interface ToastStatic {
 
 export const toast: ToastStatic;
 
+declare type comfirmType = 'confirm' | 'cancel' | 'close';
+
 declare interface ConfirmerOpts {
     text?:string;
     title?:string;
@@ -23,13 +28,14 @@ declare interface ConfirmerOpts {
     cancelText?:string;
     cancelBtn?:boolean;
     closeBtn?:boolean;
-    onclose?:Function;
+    parent?: DomEle;
     theme?:'gamer'|'yellow'|'default';
+    onhide?(): void;
 }
 
 export interface ConfirmStatic {
-    (opts?: ConfirmerOpts): Promise<boolean>;
-    (text?: string, title?:string): Promise<boolean>;
+    (opts?: ConfirmerOpts): Promise<comfirmType>;
+    (text?: string, title?:string): Promise<comfirmType>;
     close(): boolean;
 }
 
@@ -40,14 +46,15 @@ declare interface AlerterOpts {
     title?:string;
     confirmText?:string;
     closeBtn?:boolean;
-    onclose?:Function;
     theme?:'gamer'|'yellow'|'default';
-    close(): boolean;
+    parent?: DomEle;
+    onhide?(): void;
 }
 
 export interface AlertStatic {
-    (opts?: AlerterOpts): Promise<any>;
-    (text?:string, title?:string): Promise<any>;
+    (opts?: AlerterOpts): Promise<comfirmType>;
+    (text?:string, title?:string): Promise<comfirmType>;
+    close(): boolean;
 }
 
 export const alert: AlertStatic;
@@ -55,6 +62,8 @@ export const alert: AlertStatic;
 declare interface LoadingerOpts {
     text?:string;
     time?:number|null;
+    parent?: DomEle;
+    onhide?(): void;
 }
 
 export interface LoadingStatic {
