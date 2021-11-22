@@ -3,7 +3,7 @@
 // import commonStyle from './common-ui/commonStyle';
 import tool from './easydom';
 import commonStyle from './commonStyle';
-export let $ = tool;
+export const $ = tool;
 
 $.addCommonStyle(commonStyle);
 reportStyle(initStyle);
@@ -17,14 +17,14 @@ export function reportStyle (func, id = 'TACL-UI') {
     $.reportStyle({
         func,
         id,
-        pool: true
+        pool: true,
     });
 }
 
 export function initTaclUI (el) {
     el.addClass('tacl-ui');
 }
-
+ 
 function initStyle () {
     return /* css */`
         .tacl-ui{

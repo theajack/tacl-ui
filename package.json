@@ -1,20 +1,19 @@
 {
     "name": "tacl-ui",
-    "version": "0.0.39",
+    "version": "0.0.40",
     "description": "一套taost、confirm、loading、alert、drag的简单ui组件",
+    "main": "index.min.js",
+    "unpkg": "taclui.min.js",
+    "jsdelivr": "taclui.min.js",
+    "typings": "index.d.ts",
     "scripts": {
-        "build:cdn": "webpack --config webpack-config/build.js --env.mode=script && npm run copy-latest",
-        "build:npm": "npm run render-tpl && npm run copy-npm",
-        "publish": "npm publish npm",
         "dev": "webpack-dev-server --open --config webpack-config/dev.js",
-        "lint": "eslint src --ext js",
-        "copy-latest": "node ./helper/copy-latest.js",
-        "modify-version": "node ./helper/modify-version.js",
-        "copy-npm": "node ./helper/copy-npm.js",
-        "render-tpl": "node ./template/execute.js",
-        "build": "npm run build:npm && npm run build:cdn && npm run modify-version && node ./helper/copy-git-code.js",
-        "build:gitcode": "cd tacl-ui && npm run build",
-        "build:all": "npm run build && npm run build:gitcode"
+        "start": "npm run dev",
+        "build:npm": "webpack --config webpack-config/build.js",
+        "build:cdn": "webpack --config webpack-config/build.cdn.js",
+        "build": "npm run build:npm && npm run build:cdn",
+        "publish": "npm publish npm",
+        "lint": "eslint src --ext js"
     },
     "author": "theajack",
     "repository": {
@@ -35,7 +34,7 @@
         "babel-eslint": "^10.0.3",
         "babel-loader": "^8.0.6",
         "babel-plugin-transform-object-rest-spread": "^6.26.0",
-        "easy-dom-util": "0.0.27",
+        "css-loader": "^6.5.1",
         "eslint": "^6.5.1",
         "eslint-config-standard": "^14.1.0",
         "eslint-loader": "^3.0.2",
@@ -47,11 +46,14 @@
         "gulp-rename": "^2.0.0",
         "husky": "^3.0.9",
         "lint-staged": "^9.4.2",
+        "style-loader": "^3.3.1",
         "webpack": "^4.41.2",
         "webpack-cli": "^3.3.9",
         "webpack-dev-server": "^3.8.2"
     },
-    "dependencies": {},
+    "dependencies": {
+        "easy-dom-util": "0.0.29"
+    },
     "husky": {
         "hooks": {
             "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"

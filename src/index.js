@@ -5,31 +5,20 @@ import easyDom from './easydom';
 import _loading from './loading';
 import _toast from './toast';
 import _confirm from './confirm';
+import _alert from './alert';
+import _pop from './pop';
 import Drag from './drag';
 import version from './version';
 
-export let tool = easyDom;
+export const tool = easyDom;
 
-export let loading = _loading;
-export let toast = _toast;
-export let confirm = _confirm;
-export let alert = (text, title) => {
-    if (typeof text === 'object') {
-        text.cancelBtn = false;
-    } else {
-        text = {
-            text,
-            title,
-            cancelBtn: false
-        };
-    }
-    return confirm(text);
-};
-alert.close = _confirm.close;
+export const loading = _loading;
+export const toast = _toast;
+export const confirm = _confirm;
+export const alert = _alert;
+export const pop = _pop;
 
-export let drag = (opts) => {
-    return new Drag(opts);
-};
+export const drag = opts => new Drag(opts);
 
 initStylePool();
 
@@ -40,5 +29,5 @@ export default {
     confirm,
     alert,
     drag,
-    version
+    version,
 };

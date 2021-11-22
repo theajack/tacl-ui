@@ -9,17 +9,31 @@ declare interface ToasterOpts {
     position?: 'top'|'middle'|'bottom';
     parent?: DomEle;
     onhide?(): void;
+    onopen?(): void;
+    contentHtml?: boolean;
+    showClose?: boolean;
+    customClass?: string;
+    button?: { // 增加一个小按钮
+        text: string;
+        onclick(): void;
+    }
 }
 
 export interface ToastStatic {
     (opts?: ToasterOpts): void;
     (text?: string, time?: number, position?: 'top'|'middle'|'bottom'): void;
+    new(opts?: ToasterOpts): Function;
+    new(text?: string, time?: number, position?: 'top'|'middle'|'bottom'): Function;
     close(): boolean;
 }
 
 export const toast: ToastStatic;
 
-declare type comfirmType = 'confirm' | 'cancel' | 'close';
+declare type confirmResultType = 'confirm' | 'cancel' | 'close';
+
+declare type confirmType = 'confirm' | 'alert' | 'pop';
+
+declare type confirmStyle = 'yellow2' | 'yellow' | 'default';
 
 declare interface ConfirmerOpts {
     text?:string;
@@ -29,35 +43,56 @@ declare interface ConfirmerOpts {
     cancelBtn?:boolean;
     closeBtn?:boolean;
     parent?: DomEle;
-    theme?:'gamer'|'yellow'|'default';
+    theme?: confirmStyle;
     onhide?(): void;
+    onopen?(): void;
+    customEl?: DomEle;
+    customClass?: string;
+    contentHtml?: boolean; // default false
+    custom?(box: Ele, $: ToolStatic): void;
+    type?: confirmType; // default confirmType.confirm
+    onGetCloseMethod?(fn: void): void;
+    clickConfirmClose?: boolean; // default true
+    clickCancelClose?: boolean; // default true
+    onconfirm?(): void;
+    oncancel?(): void;
 }
 
 export interface ConfirmStatic {
-    (opts?: ConfirmerOpts): Promise<comfirmType>;
-    (text?: string, title?:string): Promise<comfirmType>;
+    (opts?: ConfirmerOpts): Promise<confirmResultType>;
+    (text?: string, title?:string): Promise<confirmResultType>;
     close(): boolean;
+    new(opts?: ConfirmerOpts): Promise<confirmResultType>;
+    new(text?: string, title?:string): Promise<confirmResultType>;
+    onOptions?(opt: ConfirmerOpts): ConfirmerOpts;
+    theme: confirmStyle;
 }
 
 export const confirm: ConfirmStatic;
 
-declare interface AlerterOpts {
-    text?:string;
-    title?:string;
-    confirmText?:string;
-    closeBtn?:boolean;
-    theme?:'gamer'|'yellow'|'default';
-    parent?: DomEle;
-    onhide?(): void;
-}
-
 export interface AlertStatic {
-    (opts?: AlerterOpts): Promise<comfirmType>;
-    (text?:string, title?:string): Promise<comfirmType>;
+    (opts?: ConfirmerOpts): Promise<confirmResultType>;
+    (text?:string, title?:string): Promise<confirmResultType>;
     close(): boolean;
+    new(opts?: ConfirmerOpts): Promise<confirmResultType>;
+    new(text?: string, title?:string): Promise<confirmResultType>;
+    onOptions?(opt: ConfirmerOpts): ConfirmerOpts;
+    theme: confirmStyle;
 }
 
 export const alert: AlertStatic;
+
+export interface PopStatic {
+    (opts?: ConfirmerOpts): Promise<confirmResultType>;
+    (customEl?:string|HTMLElement|Ele, title?:string): Promise<confirmResultType>;
+    close(): boolean;
+    new(opts?: ConfirmerOpts): Promise<confirmResultType>;
+    new(text?: string, title?:string): Promise<confirmResultType>;
+    onOptions?(opt: ConfirmerOpts): ConfirmerOpts;
+    theme: confirmStyle;
+}
+
+export const pop: PopStatic;
 
 declare interface LoadingerOpts {
     text?:string;
@@ -67,8 +102,10 @@ declare interface LoadingerOpts {
 }
 
 export interface LoadingStatic {
-    (opts?: LoadingerOpts);
-    (text?:string, time?:string|null);
+    (opts?: LoadingerOpts): void;
+    (text?:string, time?:string|null): void;
+    new(opts?: LoadingerOpts): Function;
+    new(text?:string, time?:string|null): Function;
     close(): void;
 }
 
@@ -77,6 +114,10 @@ export const loading: LoadingStatic;
 declare interface LoadingerOpts {
     text?:string;
     time?:number|null;
+    parent?: DomEle;
+    backgroundOpacity?: number;
+    onopen?(): void;
+    onhide?(): void;
 }
 
 declare interface DragParameters {
@@ -108,7 +149,6 @@ declare class Drag {
     left: number|string;
     top: number|string;
     margin: Array<number>;
-    version: string;
 }
 
 export interface DragStatic {
@@ -123,6 +163,7 @@ export interface TaclUIStatic {
     toast: ToastStatic;
     confirm: ConfirmStatic;
     alert: AlertStatic;
+    pop: PopStatic;
     drag: DragStatic;
     version: string;
 }

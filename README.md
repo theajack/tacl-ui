@@ -1,35 +1,38 @@
 # [tacl-ui](https://github.com/theajack/tacl-ui)
 
 
-## 一套taost、confirm、loading、alert、drag的简单ui组件
+## A set of simple ui components for taost, confirm, loading, alert, drag
+
+----
+
+[中文](https://github.com/theajack/tacl-ui/blob/master/README.cn.md) | [Version Log](https://github.com/theajack/tacl-ui/blob/master/helper/version.md)
 
 [TOC]
 
+### 0. Installation and use
 
-### 0. 安装使用
-
-#### 0.1 npm 方式安装
+#### 0.1 npm installation
 
 ```
 npm i tacl-ui
 ```
 
-使用
+use
 
 ```js
-import {tool, toast, confirm, alert, loading, drag} from 'tacl-ui';
-// 或
-import TaclUI from 'tacl-ui';
+import {tool, toast, confirm, alert, loading, drag} from'tacl-ui';
+// or
+import TaclUI from'tacl-ui';
 // TaclUI = {tool, toast, confirm, alert, loading, drag}
 
 // do something ...
 ```
 
-#### 0.2 script 标签引入
+#### 0.2 script tag introduction
 
 ```html
 <script src="https://cdn.jsdelivr.net/gh/theajack/tacl-ui/cdn/taclui.latest.min.js"></script>
-<!--或通过版本号引入-->
+<!--Or introduce by version number-->
 <script src="https://cdn.jsdelivr.net/gh/theajack/tacl-ui/cdn/taclui.{version}.min.js"></script>
 <script>
     TaclUI.toast('Hello world!')
@@ -40,130 +43,212 @@ import TaclUI from 'tacl-ui';
 
 #### 1.1 tool
 
-暴露出 [easy-dom](https://github.com/theajack/easy-dom) 工具
+Expose the [easy-dom](https://github.com/theajack/easy-dom) tool
 
 
 #### 1.2 toast
 
-弹出一个toast
+Pop up a toast
 
 ```js
-// 简单调用
+// simple call
 toast(text[, time, position]);
-toast('一个提示')
+toast('a hint')
 
-// json调用
+// json call
 toast({
-    text: '一个提示',
-    // 其他参数
+    text:'A prompt',
+    // Other parameters
 })
+
+// new method All components in tacl are an instance by default, you can use the new method to create a new instance
+const close = toast.new(...);
 ```
 
-参数列表
+parameter list
 
-| 参数 | 是否必须 | 类型 | 默认值 | 说明 |
-| :--: | :--: | :--: | :--: | :--: |
-| text | 是 | string | -- | toast弹出的文字 |
-| time | 否 | number | 2000 | 显示事件 ms |
-| position | 否 | string | 'middle' | toast位置，可选值：['top','middle','bottom'] |
+```ts
+declare interface ToasterOpts {
+    text?: string;
+    time?: number;
+    position?:'top'|'middle'|'bottom';
+    parent?: DomEle;
+    onhide?(): void;
+    onopen?(): void;
+    contentHtml?: boolean;
+    showClose?: boolean;
+    customClass?: string;
+    button?: {// add a small button
+        text: string;
+        onclick(): void;
+    }
+}
+```
 
 #### 1.2 confirm
 
-弹出一个confirm确认框
+A confirm confirmation box pops up
 
 ```js
-// 简单调用
-confirm('是否确认')
-confirm('是否确认','确认框')
+// simple call
+confirm('Whether to confirm')
+confirm('whether to confirm','confirm box')
 
-// json调用
+// json call
 confirm({
-    text:'是否确认',
-    title:'确认框',
+    text:'Are you sure?',
+    title:'Confirmation box',
     confirmText:'confirm',
     cancelText:'cancel',
-    cancelBtn:false, // 是否需要取消按钮
-    theme:'default', // gamer
-}).then((confirm)=>{
-    if (confirm) {
+    cancelBtn:false, // Do you need a cancel button
+    theme:'default', //
+}).then((result)=>{
+    if (result) {
         
     } else {
 
     }
 })
+
+// new
+confirm.new(...).then((result)=>{})
 ```
 
-参数列表
+parameter list
 
-| 参数 | 是否必须 | 类型 | 默认值 | 说明 |
-| :--: | :--: | :--: | :--: | :--: |
-| text | 否 | string | '是否确认该操作？' | 确认框的内容 |
-| title | 否 | string | '提示' | 确认框标题 |
-| confirmText | 否 | string | '确定' | 确认按钮文字 |
-| cancelText | 否 | string | '取消' | 取消按钮文字 |
-| cancelBtn | 否 | boolean | true | 是否显示取消按钮 |
-| theme | 否 | string | 'default' | 主题，可选值：['default','gamer'] |
+```ts
+declare interface ConfirmerOpts {
+    text?:string;
+    title?:string;
+    confirmText?:string;
+    cancelText?:string;
+    cancelBtn?:boolean;
+    closeBtn?:boolean;
+    parent?: DomEle;
+    theme?: confirmStyle;
+    onhide?(): void;
+    onopen?(): void;
+    customEl?: DomEle;
+    customClass?: string;
+    contentHtml?: boolean; // default false
+    custom?(box: Ele, $: ToolStatic): void;
+    type?: confirmType; // default confirmType.confirm
+    onGetCloseMethod?(fn: void): void; // Get the closed function when user new creates a new pop-up box
+    clickConfirmClose?: boolean; // default true
+    clickCancelClose?: boolean; // default true
+    onconfirm?(): void;
+    oncancel?(): void;
+}
+```
 
+enumerate
+
+```ts
+declare type confirmResultType ='confirm' |'cancel' |'close';
+
+declare type confirmType ='confirm' |'alert' |'pop';
+
+declare type confirmStyle ='yellow2' |'yellow' |'default';
+```
 
 #### 1.3 alert
 
-弹出一个alert
+Pop up an alert
 
 ```js
-// 简单调用
-alert('成功')
-alert('成功','成功标题')
+// simple call
+alert('success')
+alert('success','success title')
 
-// json调用
+// json call
 alert({
-    text:'成功',
-    title:'成功标题',
+    text:'Success',
+    title:'Success Title',
     confirmText:'confirm',
-    theme:'default', // gamer
+    theme:'default', //
 }).then(()=>{
 
 })
+
+// new
+alert.new(...).then((result)=>{})
 ```
 
-参数列表
+parameter list
 
-| 参数 | 是否必须 | 类型 | 默认值 | 说明 |
-| :--: | :--: | :--: | :--: | :--: |
-| text | 否 | string | '是否确认该操作？' | 确认框的内容 |
-| title | 否 | string | '提示' | 确认框标题 |
-| confirmText | 否 | string | '确定' | 确认按钮文字 |
-| theme | 否 | string | 'default' | 主题，可选值：['default','gamer'] |
+Same as confirm
 
-#### 1.4 loading
+#### 1.4 pop
 
-弹出一个loading
+Pop up a pop-up box
 
 ```js
-// 简单调用
-loading(text[,time]);
-loading();
-loading('加载中...');
-loading('加载中...', 1000);
+// simple call
+pop('Are you sure?')
+pop('Are you sure?','Confirmation box')
 
-loading.close(); // 手动关闭
+// json call
+pop({
+    text:'Are you sure?',
+    title:'Confirmation box',
+    confirmText:'confirm',
+    cancelText:'cancel',
+    cancelBtn:false, // Do you need a cancel button
+    theme:'default', //
+}).then((result)=>{
+    if (result) {
+        
+    } else {
 
-// json调用
-loading({
-    text:'成功',
-    time:1000
+    }
 })
+
+// new
+pop.new(...).then((result)=>{})
 ```
 
-参数列表
+parameter list
 
-| 参数 | 是否必须 | 类型 | 默认值 | 说明 |
-| :--: | :--: | :--: | :--: | :--: |
-| text | 否 | string | '' | loading文字 |
-| time | 否 | number | null | loading持续时间，默认不自动关闭 |
+Same as confirm
 
-#### 1.5 drag
+#### 1.5 loading
 
-生成一个可拖拽元素，兼容pc和移动端
+Pop up a loading
+
+```js
+// simple call
+loading(text[,time]);
+loading();
+loading('Loading...');
+loading('Loading...', 1000);
+
+loading.close(); // Manually close
+
+// json call
+loading({
+    text:'Success',
+    time:1000
+})
+
+const close = loading.new(...);
+```
+
+parameter list
+
+```ts
+declare interface LoadingerOpts {
+    text?:string;
+    time?:number|null;
+    parent?: DomEle;
+    backgroundOpacity?: number;
+    onopen?(): void;
+    onhide?(): void;
+}
+```
+
+#### 1.6 drag
+
+Generate a draggable element, compatible with pc and mobile
 
 ```js
 let el = drag({
@@ -176,31 +261,63 @@ let el = drag({
     aside = false,
     preventDefault = true,
     reinitPosition = false,
-    margin = 3, // 上右下左 或者只传入一个数字
+    margin = 3, // upper right lower left or just pass in a number
 })
 ```
 
-参数列表
+parameter list
 
-| 参数 | 是否必须 | 类型 | 默认值 | 说明 |
+| Parameter | Must | Type | Default Value | Description |
 | :--: | :--: | :--: | :--: | :--: |
-| el | 是 | dom/Ele/selector | -- | 需要拖拽的元素 |
-| parent | 否 | dom/Ele/selector | -- | 指定一个父元素，使得拖拽只能在父元素中进行，父元素需要设置position样式 |
-| enableDrag | 否 | boolean | true | 是否可拖拽 |
-| onClick | 否 | function | function(){} | 点击事件 |
-| aside | 否 | boolean | false | 是否吸附在两侧 |
-| onSideChange | 否 | function | function(isLeft){} | 只在aside=true时生效，当吸附侧改变时触发 |
-| zIndex | 否 | number | 100 | 拖拽元素的 z-index |
-| preventDefault | 否 | boolean | true | 是否禁止默认的事件行为 |
-| margin | 否 | number/Array[top,right/bottom/left] | 3 | 上下左右的边距 |
-| reinitPosition | 否 | boolean | false | 是否根据orientationchange 和 resize 事件来改变drag的位置，当drag为全屏时需要开启 |
+| el | Yes | dom/Ele/selector | - | Elements to be dragged |
+| parent | No | dom/Ele/selector | - | Specify a parent element, so that the drag can only be carried out in the parent element, and the parent element needs to set the position style |
+| enableDrag | No | boolean | true | Whether it can be dragged or not |
+| onClick | No | function | function(){} | Click event |
+| aside | no | boolean | false | whether to be adsorbed on both sides |
+| onSideChange | No | function | function(isLeft){} | Only takes effect when aside=true, and triggers when the suction side changes |
+| zIndex | No | number | 100 | z-index of the dragged element |
+| preventDefault | No | boolean | true | Whether to prohibit the default event behavior |
+| margin | No | number/Array[top,right/bottom/left] | 3 | Top, bottom, left, and right margins |
+| reinitPosition | No | boolean | false | Whether to change the position of the drag according to the orientationchange and resize events, it needs to be turned on when the drag is full screen |
+```ts
+declare interface DragParameters {
+    el: Ele|HTMLElement|string;
+    parent?: Ele|HTMLElement|string;
+    onClick?: (event: Event, endX: number, endY: number) => {};
+    onSideChange?: (isLeft:boolean) => {};
+    zIndex?: number;
+    enableDrag?:boolean;
+    delay?:number;
+    aside?:boolean;
+    preventDefault?:boolean;
+    reinitPosition?:boolean;
+    margin?:number|Array<number>;
+    onDragStart?: (event: Event, x: number, y: number) => {};
+    onDragMove?: (event: Event, x: number, y: number) => {};
+    onDragEnd?: (event: Event, x: number, y: number) => {};
+}
 
-备注：关于 preventDefault，preventDefault=true 可以在移动端禁止浏览器的拖拽导致页面移动，上方有空白
-但是这个属性也会禁止掉子元素的点击事件，可以通过 onClick 事件中的 event 的target属性来规避
-两种方式各有利弊
+declare class Drag {
+    constructor(parameters: DragParameters);
+    setPosition(left: number, top: number): void;
+    initPosition(): void;
+    getParentSize(): {width: number, height: number};
+    aside: boolean;
+    sideLeft: boolean;
+    enableDrag: boolean;
+    preventDefault: boolean;
+    left: number|string;
+    top: number|string;
+    margin: Array<number>;
+}
+```
 
-属性列表
+Remarks: Regarding preventDefault, preventDefault=true can prohibit the dragging of the browser on the mobile terminal to cause the page to move, and there is a blank at the top
+But this attribute will also prohibit the click event of the child element, which can be circumvented by the target attribute of the event in the onClick event
+Both methods have their pros and cons
+
+Attribute list
 
 `preventDefault, enableDrag, aside`
 
-使用与参数列表一样，可以在生成之后可以动态修改属性
+The use is the same as the parameter list, and the properties can be dynamically modified after generation

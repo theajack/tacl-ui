@@ -1,80 +1,102 @@
 import {$, reportStyle, initTaclUI} from './style';
 
-let el = null;
-let timer = null;
-let prefix = 'g-loading-';
-
+const prefix = 'g-loading-';
+// 单例模式
+const instance = {
+    el: null,
+    timer: null,
+    lastParent: null,
+    onhide: null,
+    onopen: null,
+};
+ 
 reportStyle(initStyle);
-let onhide = null;
-let onopen = null;
-function loading (text, time) {
+function loading (text, time, target = instance) {
     let parent;
-    if(onhide){onhide();}
-    onhide = null;
-    onopen = null;
+    if (target.onhide) {
+        target.onhide();
+    }
+    target.onhide = null;
+    target.onopen = null;
+    let backgroundOpacity = '';
     if (typeof text === 'object') {
         parent = text.parent;
         time = text.time;
-        if(text.onhide){
-            onhide = text.onhide;
+        if (text.onhide) {
+            target.onhide = text.onhide;
         }
-        onopen = text.onopen;
+        target.onopen = text.onopen;
+        backgroundOpacity = text.backgroundOpacity;
         text = text.text;
     }
-    init(text, time, parent);
+    init(text, time, target, parent, backgroundOpacity);
 }
+loading.new = function (text, time, fn = loading) {
+    const target = {};
+    fn(text, time, target);
+    return () => {
+        close(target);
+    };
+};
 loading.close = close;
 
-function init (text, time, parent = document.body) {
-    if (el === null) {
-        el = {};
+function init (text, time, target, parent = document.body, backgroundOpacity) {
+    parent = $.query(parent);
+    if (!target.el) {
+        target.el = {};
+        target.lastParent = parent;
         $.classPrefix(prefix);
-        let mask = $.create().cls('mask');
-        let wrapper = $.create().cls('wrapper').html(
-            /* html*/`
+        const mask = $.create().cls('mask');
+        const wrapper = $.create().cls('wrapper')
+            .html(/* html*/`
 <svg class="g-loading-circular" viewBox="0 0 50 50">
     <circle class="g-loading-path" cx="25" cy="25" r="20" fill="none"></circle>
-</svg>`
-        );
-        el.text = $.create().cls('text');
-        wrapper.append(el.text);
+</svg>`);
+        target.el.text = $.create().cls('text');
+        wrapper.append(target.el.text);
         $.clearClassPrefix();
         initTaclUI(mask);
-        $.query(parent).append(
-            mask.append(wrapper)
-        );
-        el.mask = mask;
-        el.wrapper = wrapper;
+        parent.append(mask.append(wrapper));
+        target.el.mask = mask;
+        target.el.wrapper = wrapper;
+    } else if (parent.el !== target.lastParent.el) {
+        target.lastParent = parent;
+        parent.append(target.el.mask);
     }
-    open(text, time, onhide);
+    target.el.mask.style('background-color', backgroundOpacity ? `rgba(0,0,0,${backgroundOpacity})` : 'transparent');
+    open(text, time, target);
 }
 
-function open (text, time) {
-    let autoClose = typeof time === 'number';
-    el.isOpen = true;
-    el.mask.style('display', 'block');
-    el.text.text(text);
+function open (text, time, target) {
+    const autoClose = typeof time === 'number';
+    target.el.isOpen = true;
+    target.el.mask.style('display', 'block');
+    target.el.text.text(text);
     window.setTimeout(() => {
-        if(onopen) onopen(el.mask);
-        el.wrapper.addClass(prefix + 'open');
+        if (target.onopen) target.onopen(target.el.mask);
+        target.el.wrapper.addClass(`${prefix}open`);
     }, 20);
     if (autoClose) {
-        clearTimeout(timer);
-        timer = setTimeout(() => {
+        clearTimeout(target.timer);
+        target.timer = setTimeout(() => {
             close();
         }, time);
     }
 }
-function close () {
-    if (el && el.isOpen) {
-        el.isOpen = false;
-        el.wrapper.rmClass(prefix + 'open');
+function close (target = instance) {
+    if (target.el && target.el.isOpen) {
+        target.el.isOpen = false;
+        target.el.wrapper.rmClass(`${prefix}open`);
         window.setTimeout(() => {
-            el.mask.style('display', 'none');
-            el.text.text('');
-            if(onhide) {
-                onhide();
-                onhide = null
+            if (target.onhide) {
+                target.onhide();
+                target.onhide = null;
+            }
+            if (target !== instance) {
+                target.el.mask.remove();
+            } else {
+                target.el.mask.style('display', 'none');
+                target.el.text.text('');
             }
         }, 350);
     }

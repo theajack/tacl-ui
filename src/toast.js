@@ -3,79 +3,158 @@ import {$, reportStyle, initTaclUI} from './style';
 const TOAST_POSITION = {
     TOP: 'top',
     MIDDLE: 'middle',
-    BOTTOM: 'bottom'
+    BOTTOM: 'bottom',
 };
 
-let el = null;
-let timer = null;
 const prefix = 'g-toast-';
 
+const instance = {
+    el: null,
+    timer: null,
+    lastParent: null,
+    onhide: null,
+    onopen: null,
+};
+
 reportStyle(initStyle);
-let onhide = null;
-let onopen = null;
-function toast (text, time, position) {
+function toast (text, time, target = instance) {
     let parent;
-    if(onhide){onhide();}
-    onhide = null;
-    onopen = null;
+    if (target.onhide) {
+        target.onhide();
+    }
+    target.onhide = null;
+    target.onopen = null;
+    let contentHtml = false;
+    let position = TOAST_POSITION.MIDDLE;
+    let customClass = '';
+    let showClose = false;
+    let button = null;
     if (typeof text === 'object') {
+        button = text.button;
+        showClose = text.showClose;
         time = text.time;
         position = text.position;
         parent = text.parent;
         if (text.onhide) {
-            onhide = text.onhide;
+            target.onhide = text.onhide;
         }
-        onopen = text.onopen;
+        target.onopen = text.onopen;
+        customClass = text.customClass || '';
+        if (typeof text.contentHtml === 'boolean') {
+            contentHtml = text.contentHtml;
+        }
+        // 最后赋值
         text = text.text;
     }
-    init(text, time, position, parent);
+    target.customClass = customClass;
+    init({text, time, position, parent, contentHtml, target, showClose, button});
 }
+
+toast.new = function (text, time, fn = toast) {
+    const target = {};
+    fn(text, time, target);
+    return () => {
+        close(target);
+    };
+};
 toast.close = close;
 
-function init (text = '', time = 2000, position = TOAST_POSITION.MIDDLE, parent = document.body) {
-    if (el === null) {
-        el = {};
+function init ({
+    text = '',
+    time = 2000,
+    position = TOAST_POSITION.MIDDLE,
+    parent = document.body,
+    contentHtml,
+    target,
+    showClose,
+    button,
+}) {
+    parent = $.query(parent);
+    if (!target.el) {
+        target.el = {};
+        target.lastParent = parent;
         $.classPrefix(prefix);
-        let wrapper = $.create().cls('wrapper');
+        const wrapper = $.create().cls('wrapper');
+        const content = $.create().cls('content');
+        const closeEl = $.create('span').cls('close')
+            .text('✕')
+            .click(() => {
+                close(target);
+            });
+
+        const btnEl = $.create('span').cls('btn');
+
+        wrapper.append([content, closeEl, btnEl]);
         $.clearClassPrefix();
         initTaclUI(wrapper);
         $.query(parent).append(wrapper);
-        el.wrapper = wrapper;
+        target.el.wrapper = wrapper;
+        target.el.content = content;
+        target.el.close = closeEl;
+        target.el.btn = btnEl;
+    } else if (parent.el !== target.lastParent.el) {
+        target.lastParent = parent;
+        parent.append(target.el.wrapper);
     }
-    open(text, time, position);
+    open({text, time, position, contentHtml, target, showClose, button});
 }
 
-function open (text, time, position) {
-    let autoClose = typeof time === 'number';
-    el.isOpen = true;
-    el.wrapper.style('display', 'block');
+function open ({text, time, position, contentHtml, target, showClose, button}) {
+    const autoClose = typeof time === 'number';
+    target.el.isOpen = true;
+    target.el.wrapper.style('display', 'block');
+    let otheClass = '';
+    target.el.close[showClose ? 'show' : 'hide']();
+    otheClass += (showClose ? ' has-close' : '');
+
+    if (button) {
+        otheClass += ' has-btn';
+        target.el.btn.text(button.text).show();
+        target.el.btn.el.onclick = () => {
+            button.onclick();
+        };
+    } else {
+        target.el.btn.hide();
+    }
+
     $.classPrefix(prefix, () => {
-        el.wrapper.cls('wrapper ' + position);
+        target.el.wrapper.cls(`wrapper ${position}${otheClass}`);
     });
+    if (target.customClass) {
+        target.el.wrapper.addClass(target.customClass, false);
+    }
     if (typeof text !== 'undefined') {
-        el.wrapper.text(text);
+        if (contentHtml) {
+            target.el.content.html(text);
+        } else {
+            target.el.content.text(text);
+        }
     }
     window.setTimeout(() => {
-        if(onopen) onopen(el.wrapper);
-        el.wrapper.addClass(prefix + 'open');
+        if (target.onopen) target.onopen(target.el.wrapper);
+        target.el.wrapper.addClass(`${prefix}open`);
     }, 20);
     if (autoClose) {
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-            close();
+        clearTimeout(target.timer);
+        target.timer = setTimeout(() => {
+            close(target);
         }, time);
     }
 }
-function close () {
-    if (el && el.isOpen) {
-        el.isOpen = false;
-        el.wrapper.rmClass(prefix + 'open');
+function close (target = instance) {
+    if (target.el && target.el.isOpen) {
+        target.el.isOpen = false;
+        target.el.wrapper.rmClass(`${prefix}open`);
         window.setTimeout(() => {
-            el.wrapper.style('display', 'none');
-            if (onhide) {
-                onhide()
-                onhide = null;
+            if (target.onhide) {
+                target.onhide();
+                target.onhide = null;
             };
+            if (target !== instance) {
+                target.el.wrapper.remove();
+            } else {
+                target.el.wrapper.style('display', 'none');
+            }
         }, 350);
         return true;
     }
@@ -104,6 +183,34 @@ function initStyle (common) {
     }
     .g-toast-wrapper.g-toast-open {
         opacity:1;
+    }
+    .g-toast-wrapper.g-toast-has-close {
+        padding-right: 25px!important;
+    }
+    .g-toast-wrapper.g-toast-has-btn {
+        padding-right: 45px!important;
+    }
+    .g-toast-btn,.g-toast-close{
+        display: block;
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #aaa;
+        padding: 0 2px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    .g-toast-close:hover{
+        color: #f44;
+    }
+    .g-toast-btn{
+        color: #ddd;
+        text-decoration: underline;
+        font-size: 14px;
+    }
+    .g-toast-btn:hover{
+        color: #fff;
     }`;
 }
 export default toast;

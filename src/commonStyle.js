@@ -1,7 +1,7 @@
-let common = {
+const common = {
 
 };
-let piece = {
+const piece = {
     mask: /* css*/`
         position:fixed;
         z-index:10000;
@@ -25,14 +25,14 @@ let piece = {
         max-width: 50%;
         color:#fff;
     `,
-    overScroll: `
+    overScroll: /* css*/`
         word-break: break-all;
         max-height: 300px;
         overflow: auto;
         margin: 10px 0;
-    `
+    `,
 };
 export default {
     common,
-    piece
+    piece,
 };

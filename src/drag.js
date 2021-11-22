@@ -20,8 +20,8 @@ import {$, reportStyle} from './style';
 
 reportStyle(initStyle);
 
-let prefix = 'g-drag-';
-let df = function () {};
+const prefix = 'g-drag-';
+const df = function () {};
 class Drag {
     constructor ({
         el,
@@ -37,9 +37,10 @@ class Drag {
         aside = false,
         preventDefault = true,
         reinitPosition = false,
+        position = null,
         margin = 3, // 上右下左 或者只传入一个数字
     }) {
-        this.el = $.create().cls(prefix + 'wrapper');
+        this.el = $.create().cls(`${prefix}wrapper`);
         this.el.append(el);
         this.parent = null;
         if (parent === null) {
@@ -75,8 +76,8 @@ class Drag {
         this.onDragMove = onDragMove;
         this.onDragEnd = onDragEnd;
         this.touchActiveInit(zIndex);
-        this.initPosition(true);
-        let delayExecInitPosition = () => {
+        this.initPosition(true, position);
+        const delayExecInitPosition = () => {
             if (delay > 0) {
                 window.setTimeout(() => {
                     this.initPosition();
@@ -95,13 +96,13 @@ class Drag {
         this.el.style({
             left: 'auto',
             top: 'auto',
-            'z-index': zIndex
+            'z-index': zIndex,
         });
         $.registTouchEvent({
             el: this.el,
             touchStart: this.touchStart.bind(this),
             touchMove: this.touchMove.bind(this),
-            touchEnd: this.touchEnd.bind(this)
+            touchEnd: this.touchEnd.bind(this),
         });
     }
     getParentSize () {
@@ -113,12 +114,16 @@ class Drag {
             height: this.parent.el.offsetHeight,
         };
     }
-    initPosition (init) {
+    initPosition (init, position) {
         setTimeout(() => {
-            let size = this.getParentSize();
-            let dom = this.el.dom();
-            let left = this.sideLeft ? (this.margin[3]) : (size.width - dom.offsetWidth - this.margin[1]);
-            let maxTop = (size.height - dom.offsetHeight - this.margin[0]);
+            if (position) {
+                this.setPosition(position.left, position.top);
+                return;
+            }
+            const size = this.getParentSize();
+            const dom = this.el.dom();
+            const left = this.sideLeft ? (this.margin[3]) : (size.width - dom.offsetWidth - this.margin[1]);
+            const maxTop = (size.height - dom.offsetHeight - this.margin[0]);
             let top;
             if (init || this.top > maxTop) {
                 top = maxTop;
@@ -128,10 +133,10 @@ class Drag {
     }
     setPosition (left, top) {
         this.left = left;
-        this.el.style('left', this.left + 'px');
+        this.el.style('left', `${this.left}px`);
         if (typeof top !== 'undefined') {
             this.top = top;
-            this.el.style('top', this.top + 'px');
+            this.el.style('top', `${this.top}px`);
         }
     }
     touchStart (e) {
@@ -144,10 +149,10 @@ class Drag {
         this.onDragStart.call(this, e, this.starX, this.starY);
     }
     touchMove (e) {
-        let size = this.getParentSize();
+        const size = this.getParentSize();
         this.L = e.touches[0].clientX - this.disX;
         this.T = e.touches[0].clientY - this.disY;
-        let dom = this.el.dom();
+        const dom = this.el.dom();
         if (this.L < 0) { // 限制拖拽的X范围，不能拖出屏幕
             this.L = 0;
         } else if (this.L > size.width - dom.offsetWidth) {
@@ -167,20 +172,20 @@ class Drag {
     }
     touchEnd (e) {
         if (this.preventDefault) e.preventDefault();
-        let dom = this.el.dom();
+        const dom = this.el.dom();
         let endX = e.changedTouches[0].clientX;
         let endY = e.changedTouches[0].clientY;
-        let size = this.getParentSize();
-        let ww = size.width;
-        let wh = size.height;
-        let w = dom.offsetWidth;
-        let h = dom.offsetHeight;
-        let isXNotMove = (Math.abs(this.starX - endX) < 2);
-        let isYNotMove = (Math.abs(this.starY - endY) < 2);
+        const size = this.getParentSize();
+        const ww = size.width;
+        const wh = size.height;
+        const w = dom.offsetWidth;
+        const h = dom.offsetHeight;
+        const isXNotMove = (Math.abs(this.starX - endX) < 2);
+        const isYNotMove = (Math.abs(this.starY - endY) < 2);
         if (isXNotMove && isYNotMove) {
             this.onClick.call(this, e, endX, endY);
         }
-        let sideLeft = (endX <= ww / 2);
+        const sideLeft = (endX <= ww / 2);
         endX -= this.disX;
         endY -= this.disY;
         if (this.aside) {
