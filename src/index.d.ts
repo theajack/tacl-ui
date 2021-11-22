@@ -22,8 +22,8 @@ declare interface ToasterOpts {
 export interface ToastStatic {
     (opts?: ToasterOpts): void;
     (text?: string, time?: number, position?: 'top'|'middle'|'bottom'): void;
-    new(opts?: ToasterOpts): Function;
-    new(text?: string, time?: number, position?: 'top'|'middle'|'bottom'): Function;
+    'new'(opts?: ToasterOpts): Function;
+    'new'(text?: string, time?: number, position?: 'top'|'middle'|'bottom'): Function;
     close(): boolean;
 }
 
@@ -62,8 +62,8 @@ export interface ConfirmStatic {
     (opts?: ConfirmerOpts): Promise<confirmResultType>;
     (text?: string, title?:string): Promise<confirmResultType>;
     close(): boolean;
-    new(opts?: ConfirmerOpts): Promise<confirmResultType>;
-    new(text?: string, title?:string): Promise<confirmResultType>;
+    'new'(opts?: ConfirmerOpts): Promise<confirmResultType>;
+    'new'(text?: string, title?:string): Promise<confirmResultType>;
     onOptions?(opt: ConfirmerOpts): ConfirmerOpts;
     theme: confirmStyle;
 }
@@ -74,8 +74,8 @@ export interface AlertStatic {
     (opts?: ConfirmerOpts): Promise<confirmResultType>;
     (text?:string, title?:string): Promise<confirmResultType>;
     close(): boolean;
-    new(opts?: ConfirmerOpts): Promise<confirmResultType>;
-    new(text?: string, title?:string): Promise<confirmResultType>;
+    'new'(opts?: ConfirmerOpts): Promise<confirmResultType>;
+    'new'(text?: string, title?:string): Promise<confirmResultType>;
     onOptions?(opt: ConfirmerOpts): ConfirmerOpts;
     theme: confirmStyle;
 }
@@ -86,8 +86,8 @@ export interface PopStatic {
     (opts?: ConfirmerOpts): Promise<confirmResultType>;
     (customEl?:string|HTMLElement|Ele, title?:string): Promise<confirmResultType>;
     close(): boolean;
-    new(opts?: ConfirmerOpts): Promise<confirmResultType>;
-    new(text?: string, title?:string): Promise<confirmResultType>;
+    'new'(opts?: ConfirmerOpts): Promise<confirmResultType>;
+    'new'(text?: string, title?:string): Promise<confirmResultType>;
     onOptions?(opt: ConfirmerOpts): ConfirmerOpts;
     theme: confirmStyle;
 }
@@ -104,8 +104,8 @@ declare interface LoadingerOpts {
 export interface LoadingStatic {
     (opts?: LoadingerOpts): void;
     (text?:string, time?:string|null): void;
-    new(opts?: LoadingerOpts): Function;
-    new(text?:string, time?:string|null): Function;
+    'new'(opts?: LoadingerOpts): Function;
+    'new'(text?:string, time?:string|null): Function;
     close(): void;
 }
 
