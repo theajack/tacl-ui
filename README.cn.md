@@ -31,9 +31,10 @@ import TaclUI from 'tacl-ui';
 #### 0.2 script 标签引入
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/theajack/tacl-ui/cdn/taclui.latest.min.js"></script>
-<!--或通过版本号引入-->
-<script src="https://cdn.jsdelivr.net/gh/theajack/tacl-ui/cdn/taclui.{version}.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tacl-ui/taclui.min.js"></script>
+<!-- or -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/tacl-ui@x.x.x/taclui.min.js"></script> -->
+<script>
 <script>
     TaclUI.toast('Hello world!')
 </script>

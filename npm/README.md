@@ -31,9 +31,9 @@ import TaclUI from'tacl-ui';
 #### 0.2 script tag introduction
 
 ```html
-<script src="https://cdn.jsdelivr.net/gh/theajack/tacl-ui/cdn/taclui.latest.min.js"></script>
-<!--Or introduce by version number-->
-<script src="https://cdn.jsdelivr.net/gh/theajack/tacl-ui/cdn/taclui.{version}.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/tacl-ui/taclui.min.js"></script>
+<!-- or -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/tacl-ui@x.x.x/taclui.min.js"></script> -->
 <script>
     TaclUI.toast('Hello world!')
 </script>
