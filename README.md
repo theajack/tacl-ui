@@ -1,11 +1,15 @@
-# [tacl-ui](https://github.com/theajack/tacl-ui)
+
+## This item has been migrated to [easy-dom](https://github.com/theajack/easy-dom)
+
+# [tacl-ui](https://github.com/theajack/easy-dom)
+
 
 
 ## A set of simple ui components for taost, confirm, loading, alert, drag
 
 ----
 
-[中文](https://github.com/theajack/tacl-ui/blob/master/README.cn.md) | [Version Log](https://github.com/theajack/tacl-ui/blob/master/helper/version.md) | [Online use](https://theajack.gitee.io/jsbox?theme=dark&lang=html&lib=https://cdn.jsdelivr.net/npm/easy-dom-util/easydom.min.js,https://cdn.jsdelivr.net/npm/tacl-ui/taclui.min.js&code=DwZwxgTglgDgLgAhBMBeARACznGIBcA9IWACYB2AdAFYikCmANlAG4SXn1yHkwC2hOAEMwjALQBXKIJGMplPlCq10APmCFw0eKoCwAKGClWCKKVQByUhCEBzC6ut2AsvQ3GWewwCMJOAPbkCIGiUGAA1pYA+nD+QiBwABQAlA6x8XAavgHkXsDZsUEhzBHRYIEAZlAQfCkO5eRVNVl+hXkFgcHkoaUWUYxxxuS2daoDQkO2LTl5CQCejPReCCsIAMROtgDeBqt7CADuZnCY+AgAHAAMMAAeANy7+yuY9FC22GdXtw-6e94i4VsEH8EnIpDE5QGEDOa3OcJ+f38EAYEDENmMEgICAArJcAKQI1bGEAwRhCOZnCqLe6PFZCZi2chiKBweh8LFgejkVkQQkraiYuBQCpzCGBVncs6c7n0Xm0hAAXwMGnmi1mkFgcGWqwAKrIAKoASUom0SO1+TwQTDOpH8YAkfC5cEoti4AFFFo7uQAhOaG0iJKw2ezJAA08r28TM9DOcAgEno4YtT0CAGVowBhTBCYYxhCJITJBCoVQIc2W-YNED+RaUAYjQt8-ZK5OK5JNiqgsBCzoxOIJFLly160RGyjpAcWAASTAGFmS8pbe073R7QSiDSatWSQ6eI8YY831VqW1ZNzgZ2ns-8FlDCBObLzFjm14OFgVC9bS9WK+7UF74yTIOEa6gaxqAUoIxXowc53gATJciGfnsLYqhqOhAA)
+[中文](https://github.com/theajack/tacl-ui/blob/master/README.cn.md) | [Version Log](https://github.com/theajack/easy-dom/blob/master/scripts/version.md) | [Online use](https://theajack.gitee.io/jsbox?theme=dark&lang=html&lib=https://cdn.jsdelivr.net/npm/easy-dom-util,https://cdn.jsdelivr.net/npm/tacl-ui&code=DwZwxgTglgDgLgAhBMBeARACznGIBcA9IWACYB2AdAFYikCmANlAG4SXn1yHkwC2hOAEMwjALQBXKIJGMplPlCq10APmCFw0eKoCwAKGClWCKKVQByUhCEBzC6ut2AsvQ3GWewwCMJOAPbkCIGiUGAA1pYA+nD+QiBwABQAlA6x8XAavgHkXsDZsUEhzBHRYIEAZlAQfCkO5eRVNVl+hXkFgcHkoaUWUYxxxuS2daoDQkO2LTl5CQCejPReCCsIAMROtgDeBqt7CADuZnCY+AgAHAAMMAAeANy7+yuY9FC22GdXtw-6e94i4VsEH8EnIpDE5QGEDOa3OcJ+f38EAYEDENmMEgICAArJcAKQI1bGEAwRhCOZnCqLe6PFZCZi2chiKBweh8LFgejkVkQQkraiYuBQCpzCGBVncs6c7n0Xm0hAAXwMGnmi1mkFgcGWqwAKrIAKoASUom0SO1+TwQTDOpH8YAkfC5cEoti4AFFFo7uQAhOaG0iJKw2ezJAA08r28TM9DOcAgEno4YtT0CAGVowBhTBCYYxhCJITJBCoVQIc2W-YNED+RaUAYjQt8-ZK5OK5JNiqgsBCzoxOIJFLly160RGyjpAcWAASTAGFmS8pbe073R7QSiDSatWSQ6eI8YY831VqW1ZNzgZ2ns-8FlDCBObLzFjm14OFgVC9bS9WK+7UF74yTIOEa6gaxqAUoIxXowc53gATJciGfnsLYqhqOhAA)
 
 [TOC]
 

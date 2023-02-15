@@ -1,6 +1,0 @@
-/node_modules
-/template/config/tnpm.js
-/helper/copy-git-code.js
-/tacl-ui
-readme.gitcode.txt
-package-lock.json

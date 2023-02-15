@@ -1,11 +1,14 @@
-# [tacl-ui](https://github.com/theajack/tacl-ui)
+
+## 该项目已迁移到 [easy-dom](https://github.com/theajack/easy-dom)
+
+# [tacl-ui](https://github.com/theajack/easy-dom)
 
 
 ## 一套taost、confirm、loading、alert、drag的简单ui组件
 
 ----
 
-[English](https://github.com/theajack/tacl-ui#tacl-ui) | [Version Log](https://github.com/theajack/tacl-ui/blob/master/helper/version.md)
+[English](https://github.com/theajack/tacl-ui#tacl-ui) | [Version Log](https://github.com/theajack/easy-dom/blob/master/script/version.md)
 
 [TOC]
 
